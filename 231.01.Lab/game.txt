@@ -1,0 +1,12 @@
+g1h3 b8a6
+b2b4 g7g5
+b4b5 g5g4
+b5a6n g4h3n
+a6b7p h3g2p
+b7b881 g2g181
+e2e4 d7d5
+e4e5 d5d4
+e5e6 d4d3
+e6f7p d3c2p
+f7g881n c2b181n
+
