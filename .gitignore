@@ -470,3 +470,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+.DS_Store
+W3/231.03.Lab/Lab03.xcodeproj/project.xcworkspace/xcuserdata/monkies989.xcuserdatad/UserInterfaceState.xcuserstate
+W3/231.03.Lab/Lab03.xcodeproj/xcuserdata/monkies989.xcuserdatad/xcschemes/xcschememanagement.plist
