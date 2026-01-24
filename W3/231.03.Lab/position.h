@@ -2,7 +2,7 @@
  * Header File:
  *    POSITION
  * Author:
- *    <your name here>
+ *    Noah McCarthy
  * Summary:
  *    The position of a piece, the cursor, or a possible move on a chess board
  ************************************************************************/
