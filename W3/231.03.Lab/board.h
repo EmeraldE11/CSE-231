@@ -2,7 +2,7 @@
  * Header File:
  *    BOARD 
  * Author:
- *    <your name here>
+ *    Spencer Palmer
  * Summary:
  *    A collection of pieces and the state of the board
  ************************************************************************/
