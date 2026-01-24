@@ -24,13 +24,11 @@ Space space;
 ***********************************************/
 const Piece& Board::operator [] (const Position& pos) const
 {
-   assert(pos.isValid());
    assert(board[pos.getCol()][pos.getRow()]);
    return *(board[pos.getCol()][pos.getRow()]);
 }
 Piece& Board::operator [] (const Position& pos)
 {
-   assert(pos.isValid());
    assert(board[pos.getCol()][pos.getRow()]);
    return *(board[pos.getCol()][pos.getRow()]);
 }
