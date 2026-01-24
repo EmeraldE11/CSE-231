@@ -31,11 +31,37 @@ public:
 
    // constructor
    Move();
+   Move(const string & rhs);
 
+   // comparison operators
+   bool operator==(const Move & rhs) const;
+   bool operator<(const Move & rhs) const;
+
+   // text operations
+   void read(const string & rhs);
+   const Move & operator=(const string & rhs);
+   string getText() const;
+
+   // getters
+   Position getSrc() const { return source; }
+   Position getDes() const { return dest; }
+   PieceType getCapture() const { return capture; }
+   PieceType getPromotion() const { return promote; }
+   MoveType getMoveType() const { return moveType; }
+   bool getWhiteMove() const { return isWhite; }
+
+   // setters
+   void setSrc(const Position & pos) { source = pos; }
+   void setDes(const Position & pos) { dest = pos; }
+   void setCapture(PieceType pt) { capture = pt; }
+   void setPromotion(PieceType pt) { promote = pt; }
+   void setEnPassant() { moveType = ENPASSANT; }
+   void setCastle(bool isKing);
+   void setWhiteMove(bool white) { isWhite = white; }
 
 private:
-   char letterFromPieceType(PieceType pt)     const { return 'z';   }
-   PieceType pieceTypeFromLetter(char letter) const { return SPACE; }
+   char letterFromPieceType(PieceType pt)     const;
+   PieceType pieceTypeFromLetter(char letter) const;
 
 
 

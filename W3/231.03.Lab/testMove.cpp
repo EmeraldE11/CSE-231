@@ -20,7 +20,17 @@
   **************************************/
 void TestMove::constructor_default() 
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // VERIFY
+   assertUnit(move.source.isInvalid());
+   assertUnit(move.dest.isInvalid());
+   assertUnit(move.promote == SPACE);
+   assertUnit(move.capture == SPACE);
+   assertUnit(move.moveType == Move::MOVE);
+   assertUnit(move.isWhite == false);
+   assertUnit(move.text == "");
 }
 
  /*************************************
@@ -32,7 +42,15 @@ void TestMove::constructor_default()
   **************************************/
 void TestMove::constructString_simple()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP & EXERCISE
+   Move move("e5e6");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 4);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::MOVE);
 }
 
  /*************************************
@@ -44,7 +62,18 @@ void TestMove::constructString_simple()
   **************************************/
 void TestMove::read_simple()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move.read("e5e6");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 4);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::MOVE);
 }
 
  /*************************************
@@ -57,7 +86,19 @@ void TestMove::read_simple()
   **************************************/
 void TestMove::read_capture()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move.read("e5d6r");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 3);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::MOVE);
+   assertUnit(move.capture == ROOK);
 }
 
  /*************************************
@@ -69,7 +110,19 @@ void TestMove::read_capture()
   **************************************/
 void TestMove::read_enpassant()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move.read("e5f6E");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 5);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::ENPASSANT);
+   assertUnit(move.capture == PAWN);
 }
 
  /*************************************
@@ -81,7 +134,18 @@ void TestMove::read_enpassant()
   **************************************/
 void TestMove::read_castleKing()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move.read("e1g1c");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 0);
+   assertUnit(move.dest.getCol() == 6);
+   assertUnit(move.dest.getRow() == 0);
+   assertUnit(move.moveType == Move::CASTLE_KING);
 }
 
  /*************************************
@@ -93,7 +157,18 @@ void TestMove::read_castleKing()
   **************************************/
 void TestMove::read_castleQueen()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move.read("e1c1C");
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 0);
+   assertUnit(move.dest.getCol() == 2);
+   assertUnit(move.dest.getRow() == 0);
+   assertUnit(move.moveType == Move::CASTLE_QUEEN);
 }
 
  /*************************************
@@ -105,7 +180,18 @@ void TestMove::read_castleQueen()
   **************************************/
 void TestMove::assign_simple()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move = "e5e6";
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 4);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::MOVE);
 }
 
  /*************************************
@@ -118,7 +204,19 @@ void TestMove::assign_simple()
   **************************************/
 void TestMove::assign_capture()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move = "e5d6r";
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 3);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::MOVE);
+   assertUnit(move.capture == ROOK);
 }
 
  /*************************************
@@ -130,7 +228,18 @@ void TestMove::assign_capture()
   **************************************/
 void TestMove::assign_enpassant()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move = "e5f6E";
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 4);
+   assertUnit(move.dest.getCol() == 5);
+   assertUnit(move.dest.getRow() == 5);
+   assertUnit(move.moveType == Move::ENPASSANT);
 }
 
  /*************************************
@@ -142,7 +251,18 @@ void TestMove::assign_enpassant()
   **************************************/
 void TestMove::assign_castleKing()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move = "e1g1c";
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 0);
+   assertUnit(move.dest.getCol() == 6);
+   assertUnit(move.dest.getRow() == 0);
+   assertUnit(move.moveType == Move::CASTLE_KING);
 }
 
  /*************************************
@@ -154,7 +274,18 @@ void TestMove::assign_castleKing()
   **************************************/
 void TestMove::assign_castleQueen()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   move = "e1c1C";
+
+   // VERIFY
+   assertUnit(move.source.getCol() == 4);
+   assertUnit(move.source.getRow() == 0);
+   assertUnit(move.dest.getCol() == 2);
+   assertUnit(move.dest.getRow() == 0);
+   assertUnit(move.moveType == Move::CASTLE_QUEEN);
 }
 
  /*************************************
@@ -166,7 +297,17 @@ void TestMove::assign_castleQueen()
   **************************************/
 void TestMove::getText_simple()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+   move.source.set(4, 4);
+   move.dest.set(4, 5);
+   move.moveType = Move::MOVE;
+
+   // EXERCISE
+   string result = move.getText();
+
+   // VERIFY
+   assertUnit(result == "e5e6");
 }
 
  /*************************************
@@ -179,7 +320,18 @@ void TestMove::getText_simple()
   **************************************/
 void TestMove::getText_capture()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+   move.source.set(4, 4);
+   move.dest.set(4, 5);
+   move.moveType = Move::MOVE;
+   move.capture = ROOK;
+
+   // EXERCISE
+   string result = move.getText();
+
+   // VERIFY
+   assertUnit(result == "e5e6r");
 }
 
  /*************************************
@@ -192,7 +344,18 @@ void TestMove::getText_capture()
   **************************************/
 void TestMove::getText_enpassant()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+   move.source.set(4, 4);
+   move.dest.set(5, 5);
+   move.moveType = Move::ENPASSANT;
+   move.capture = PAWN;
+
+   // EXERCISE
+   string result = move.getText();
+
+   // VERIFY
+   assertUnit(result == "e5f6E");
 }
 
  /*************************************
@@ -204,7 +367,17 @@ void TestMove::getText_enpassant()
   **************************************/
 void TestMove::getText_castleKing()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+   move.source.set(4, 0);
+   move.dest.set(6, 0);
+   move.moveType = Move::CASTLE_KING;
+
+   // EXERCISE
+   string result = move.getText();
+
+   // VERIFY
+   assertUnit(result == "e1g1c");
 }
 
  /*************************************
@@ -216,7 +389,17 @@ void TestMove::getText_castleKing()
   **************************************/
 void TestMove::getText_castleQueen()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+   move.source.set(4, 0);
+   move.dest.set(2, 0);
+   move.moveType = Move::CASTLE_QUEEN;
+
+   // EXERCISE
+   string result = move.getText();
+
+   // VERIFY
+   assertUnit(result == "e1c1C");
 }
 
  /*************************************
@@ -226,7 +409,14 @@ void TestMove::getText_castleQueen()
   **************************************/
 void TestMove::letterFromPieceType_space()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(SPACE);
+
+   // VERIFY
+   assertUnit(result == ' ');
 }
 
  /*************************************
@@ -236,7 +426,14 @@ void TestMove::letterFromPieceType_space()
   **************************************/
 void TestMove::letterFromPieceType_pawn()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(PAWN);
+
+   // VERIFY
+   assertUnit(result == 'p');
 }
 
  /*************************************
@@ -246,7 +443,14 @@ void TestMove::letterFromPieceType_pawn()
   **************************************/
 void TestMove::letterFromPieceType_bishop()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(BISHOP);
+
+   // VERIFY
+   assertUnit(result == 'b');
 }
 
  /*************************************
@@ -256,7 +460,14 @@ void TestMove::letterFromPieceType_bishop()
   **************************************/
 void TestMove::letterFromPieceType_knight()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(KNIGHT);
+
+   // VERIFY
+   assertUnit(result == 'n');
 }
 
  /*************************************
@@ -266,7 +477,14 @@ void TestMove::letterFromPieceType_knight()
   **************************************/
 void TestMove::letterFromPieceType_rook()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(ROOK);
+
+   // VERIFY
+   assertUnit(result == 'r');
 }
 
  /*************************************
@@ -276,7 +494,14 @@ void TestMove::letterFromPieceType_rook()
   **************************************/
 void TestMove::letterFromPieceType_queen()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(QUEEN);
+
+   // VERIFY
+   assertUnit(result == 'q');
 }
 
  /*************************************
@@ -286,7 +511,14 @@ void TestMove::letterFromPieceType_queen()
   **************************************/
 void TestMove::letterFromPieceType_king()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   char result = move.letterFromPieceType(KING);
+
+   // VERIFY
+   assertUnit(result == 'k');
 }
 
  /*************************************
@@ -296,7 +528,14 @@ void TestMove::letterFromPieceType_king()
   **************************************/
 void TestMove::pieceTypeFromLetter_pawn()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('p');
+
+   // VERIFY
+   assertUnit(result == PAWN);
 }
 
  /*************************************
@@ -306,7 +545,14 @@ void TestMove::pieceTypeFromLetter_pawn()
   **************************************/
 void TestMove::pieceTypeFromLetter_bishop()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('b');
+
+   // VERIFY
+   assertUnit(result == BISHOP);
 }
 
  /*************************************
@@ -316,7 +562,14 @@ void TestMove::pieceTypeFromLetter_bishop()
   **************************************/
 void TestMove::pieceTypeFromLetter_knight()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('n');
+
+   // VERIFY
+   assertUnit(result == KNIGHT);
 }
 
  /*************************************
@@ -326,7 +579,14 @@ void TestMove::pieceTypeFromLetter_knight()
   **************************************/
 void TestMove::pieceTypeFromLetter_rook()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('r');
+
+   // VERIFY
+   assertUnit(result == ROOK);
 }
 
  /*************************************
@@ -336,7 +596,14 @@ void TestMove::pieceTypeFromLetter_rook()
   **************************************/
 void TestMove::pieceTypeFromLetter_queen()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('q');
+
+   // VERIFY
+   assertUnit(result == QUEEN);
 }
 
  /*************************************
@@ -346,7 +613,14 @@ void TestMove::pieceTypeFromLetter_queen()
   **************************************/
 void TestMove::pieceTypeFromLetter_king() 
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move;
+
+   // EXERCISE
+   PieceType result = move.pieceTypeFromLetter('k');
+
+   // VERIFY
+   assertUnit(result == KING);
 }
 
 
@@ -357,7 +631,19 @@ void TestMove::pieceTypeFromLetter_king()
   **************************************/
 void TestMove::equal_not()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move1;
+   move1.source = "b2";
+   move1.dest = "b4";
+   Move move2;
+   move2.source = "b2";
+   move2.dest = "b5";
+
+   // EXERCISE
+   bool result = (move1 == move2);
+
+   // VERIFY
+   assertUnit(result == false);
 }
 
  /*************************************
@@ -367,7 +653,17 @@ void TestMove::equal_not()
   **************************************/
 void TestMove::equal_equals()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move1;
+   move1.read("b2b4");
+   Move move2;
+   move2.read("b2b4");
+
+   // EXERCISE
+   bool result = (move1 == move2);
+
+   // VERIFY
+   assertUnit(result == true);
 }
 
  /*************************************
@@ -382,7 +678,17 @@ void TestMove::equal_equals()
   **************************************/
 void TestMove::lessthan_lessthan()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move1;
+   move1.dest = "b2";
+   Move move2;
+   move2.dest = "b4";
+
+   // EXERCISE
+   bool result = (move1 < move2);
+
+   // VERIFY
+   assertUnit(result == true);  // b2 < b4
 }
 
  /*************************************
@@ -392,7 +698,17 @@ void TestMove::lessthan_lessthan()
   **************************************/
 void TestMove::lessthan_equals()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move1;
+   move1.dest = "b4";
+   Move move2;
+   move2.dest = "b4";
+
+   // EXERCISE
+   bool result = (move1 < move2);
+
+   // VERIFY
+   assertUnit(result == false);
 }
 
  /*************************************
@@ -402,5 +718,15 @@ void TestMove::lessthan_equals()
   **************************************/
 void TestMove::lessthan_greaterthan()
 {
-   assertUnit(NOT_YET_IMPLEMENTED);
+   // SETUP
+   Move move1;
+   move1.dest = "b4";
+   Move move2;
+   move2.dest = "b2";
+
+   // EXERCISE
+   bool result = (move1 < move2);
+
+   // VERIFY
+   assertUnit(result == false);  // b4 is not < b2
 }
