@@ -58,9 +58,6 @@ void* Interface::p = NULL;
 void (*Interface::callBack)(Interface*, void*) = NULL;
 char          Interface::key = '\0';
 
-double Position::squareWidth  = (double)SIZE_SQUARE;
-double Position::squareHeight = (double)SIZE_SQUARE;
-
 
 /*********************************************************************
  * SLEEP
