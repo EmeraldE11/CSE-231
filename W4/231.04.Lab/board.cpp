@@ -2,7 +2,7 @@
  * Source File:
  *    BOARD 
  * Author:
- *    <your name here>
+ *    Spencer Palmer
  * Summary:
  *    A collection of pieces and a small amount of game state
  ************************************************************************/
@@ -15,6 +15,7 @@
 #include "pieceKnight.h"
 #include <cassert>
 using namespace std;
+
 
 
 /***********************************************
@@ -50,11 +51,13 @@ Space space(0,0);
 ***********************************************/
 const Piece& Board::operator [] (const Position& pos) const
 {
-   return space;
+    assert(board[pos.getCol()][pos.getRow()]);
+    return *(board[pos.getCol()][pos.getRow()]);
 }
 Piece& Board::operator [] (const Position& pos)
 {
-   return space;
+    assert(board[pos.getCol()][pos.getRow()]);
+    return *(board[pos.getCol()][pos.getRow()]);
 }
 
  /***********************************************
