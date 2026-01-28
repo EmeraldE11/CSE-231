@@ -45,6 +45,7 @@ class Position
 {
    friend class PositionTest;
    friend class TestKnight;
+   friend class TestBoard;
 public:
 
    // Position :    The Position class can work with other positions,
@@ -102,8 +103,8 @@ public:
    //   set((int)(x / getSquareWidth()) - 1,
    //      8 - (int)(y / getSquareHeight()));
    //}
-   double getSquareWidth()  const { return squareWidth; }
-   double getSquareHeight() const { return squareHeight; }
+   double getSquareWidth()  const;
+   double getSquareHeight() const;
    void setBoardWidthHeight(int widthBoard, int heightBoard);
 
    // Delta:    The Position class can work with deltas, which are
@@ -116,7 +117,7 @@ public:
    Position operator + (const Delta& rhs) const;
 
 private:
-   void set(uint8_t colRowNew) { }
+	void set(uint8_t colRowNew);
 
    uint8_t colRow;
    static double squareWidth;
