@@ -2,7 +2,7 @@
  * Header File:
  *    SPACE
  * Author:
- *    <your name here> 
+ *    Noah McCarthy
  * Summary:
  *    The space
  ************************************************************************/
