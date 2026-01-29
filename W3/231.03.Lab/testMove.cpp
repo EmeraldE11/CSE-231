@@ -23,13 +23,13 @@ void TestMove::constructor_default()
    // SETUP
    Move move;
 
-   // VERIFY
-   assertUnit(move.source.isInvalid());
-   assertUnit(move.dest.isInvalid());
-   assertUnit(move.promote == SPACE);
-   assertUnit(move.capture == SPACE);
-   assertUnit(move.moveType == Move::MOVE);
-   assertUnit(move.isWhite == false);
+   // VERIFY - use raw members, do not assume Position methods work
+   assertUnit(0xff == move.source.colRow);
+   assertUnit(0xff == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
    assertUnit(move.text == "");
 }
 
@@ -42,15 +42,26 @@ void TestMove::constructor_default()
   **************************************/
 void TestMove::constructString_simple()
 {
-   // SETUP & EXERCISE
-   Move move("e5e6");
+   // SETUP - wrong values so we verify read() actually ran
+   Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE_ERROR;
+   move.isWhite   = true;
+   move.text      = "ERROR";
 
-   // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 4);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::MOVE);
+   // EXERCISE
+   move = string("e5e6");
+
+   // VERIFY - use raw members
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x45 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -64,16 +75,24 @@ void TestMove::read_simple()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE_ERROR;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move.read("e5e6");
+   move.read(string("e5e6"));
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 4);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::MOVE);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x45 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -88,17 +107,24 @@ void TestMove::read_capture()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = SPACE;
+   move.moveType  = Move::MOVE_ERROR;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move.read("e5d6r");
+   move.read(string("e5d6r"));
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 3);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::MOVE);
-   assertUnit(move.capture == ROOK);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x35 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(ROOK == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -112,17 +138,24 @@ void TestMove::read_enpassant()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = SPACE;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move.read("e5f6E");
+   move.read(string("e5f6E"));
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 5);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::ENPASSANT);
-   assertUnit(move.capture == PAWN);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x55 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(PAWN == move.capture);
+   assertUnit(Move::ENPASSANT == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -136,16 +169,24 @@ void TestMove::read_castleKing()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move.read("e1g1c");
+   move.read(string("e1g1c"));
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 0);
-   assertUnit(move.dest.getCol() == 6);
-   assertUnit(move.dest.getRow() == 0);
-   assertUnit(move.moveType == Move::CASTLE_KING);
+   assertUnit((uint8_t)0x40 == move.source.colRow);
+   assertUnit(0x60 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::CASTLE_KING == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -159,16 +200,24 @@ void TestMove::read_castleQueen()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move.read("e1c1C");
+   move.read(string("e1c1C"));
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 0);
-   assertUnit(move.dest.getCol() == 2);
-   assertUnit(move.dest.getRow() == 0);
-   assertUnit(move.moveType == Move::CASTLE_QUEEN);
+   assertUnit(0x40 == move.source.colRow);
+   assertUnit(0x20 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::CASTLE_QUEEN == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -182,16 +231,24 @@ void TestMove::assign_simple()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE_ERROR;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move = "e5e6";
+   move = string("e5e6");
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 4);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::MOVE);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x45 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -206,17 +263,24 @@ void TestMove::assign_capture()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = SPACE;
+   move.moveType  = Move::MOVE_ERROR;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move = "e5d6r";
+   move = string("e5d6r");
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 3);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::MOVE);
-   assertUnit(move.capture == ROOK);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x35 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(ROOK == move.capture);
+   assertUnit(Move::MOVE == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -230,16 +294,24 @@ void TestMove::assign_enpassant()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = SPACE;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move = "e5f6E";
+   move = string("e5f6E");
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 4);
-   assertUnit(move.dest.getCol() == 5);
-   assertUnit(move.dest.getRow() == 5);
-   assertUnit(move.moveType == Move::ENPASSANT);
+   assertUnit(0x44 == move.source.colRow);
+   assertUnit(0x55 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(PAWN == move.capture);
+   assertUnit(Move::ENPASSANT == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -253,16 +325,24 @@ void TestMove::assign_castleKing()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move = "e1g1c";
+   move = string("e1g1c");
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 0);
-   assertUnit(move.dest.getCol() == 6);
-   assertUnit(move.dest.getRow() == 0);
-   assertUnit(move.moveType == Move::CASTLE_KING);
+   assertUnit((uint8_t)0x40 == move.source.colRow);
+   assertUnit(0x60 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::CASTLE_KING == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -276,16 +356,24 @@ void TestMove::assign_castleQueen()
 {
    // SETUP
    Move move;
+   move.source.colRow = 0xff;
+   move.dest.colRow   = 0xff;
+   move.promote   = KNIGHT;
+   move.capture   = BISHOP;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
+   move.text      = "ERROR";
 
    // EXERCISE
-   move = "e1c1C";
+   move = string("e1c1C");
 
    // VERIFY
-   assertUnit(move.source.getCol() == 4);
-   assertUnit(move.source.getRow() == 0);
-   assertUnit(move.dest.getCol() == 2);
-   assertUnit(move.dest.getRow() == 0);
-   assertUnit(move.moveType == Move::CASTLE_QUEEN);
+   assertUnit(0x40 == move.source.colRow);
+   assertUnit(0x20 == move.dest.colRow);
+   assertUnit(SPACE == move.promote);
+   assertUnit(SPACE == move.capture);
+   assertUnit(Move::CASTLE_QUEEN == move.moveType);
+   assertUnit(false == move.isWhite);
 }
 
  /*************************************
@@ -297,11 +385,14 @@ void TestMove::assign_castleQueen()
   **************************************/
 void TestMove::getText_simple()
 {
-   // SETUP
+   // SETUP - use raw colRow, do not assume Position::set() works
    Move move;
-   move.source.set(4, 4);
-   move.dest.set(4, 5);
-   move.moveType = Move::MOVE;
+   move.source.colRow = 0x44;  // e5 = col 4, row 4
+   move.dest.colRow   = 0x45;  // e6 = col 4, row 5
+   move.promote   = SPACE;
+   move.capture   = SPACE;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
 
    // EXERCISE
    string result = move.getText();
@@ -320,12 +411,14 @@ void TestMove::getText_simple()
   **************************************/
 void TestMove::getText_capture()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move;
-   move.source.set(4, 4);
-   move.dest.set(4, 5);
-   move.moveType = Move::MOVE;
-   move.capture = ROOK;
+   move.source.colRow = 0x44;  // e5
+   move.dest.colRow   = 0x45;  // e6
+   move.promote   = SPACE;
+   move.capture   = ROOK;
+   move.moveType  = Move::MOVE;
+   move.isWhite   = false;
 
    // EXERCISE
    string result = move.getText();
@@ -344,12 +437,14 @@ void TestMove::getText_capture()
   **************************************/
 void TestMove::getText_enpassant()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move;
-   move.source.set(4, 4);
-   move.dest.set(5, 5);
-   move.moveType = Move::ENPASSANT;
-   move.capture = PAWN;
+   move.source.colRow = 0x44;  // e5
+   move.dest.colRow   = 0x55;  // f6
+   move.promote   = SPACE;
+   move.capture   = PAWN;
+   move.moveType  = Move::ENPASSANT;
+   move.isWhite   = false;
 
    // EXERCISE
    string result = move.getText();
@@ -367,11 +462,14 @@ void TestMove::getText_enpassant()
   **************************************/
 void TestMove::getText_castleKing()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move;
-   move.source.set(4, 0);
-   move.dest.set(6, 0);
-   move.moveType = Move::CASTLE_KING;
+   move.source.colRow = 0x40;  // e1
+   move.dest.colRow   = 0x60;  // g1
+   move.promote   = SPACE;
+   move.capture   = SPACE;
+   move.moveType  = Move::CASTLE_KING;
+   move.isWhite   = false;
 
    // EXERCISE
    string result = move.getText();
@@ -389,11 +487,14 @@ void TestMove::getText_castleKing()
   **************************************/
 void TestMove::getText_castleQueen()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move;
-   move.source.set(4, 0);
-   move.dest.set(2, 0);
-   move.moveType = Move::CASTLE_QUEEN;
+   move.source.colRow = 0x40;  // e1
+   move.dest.colRow   = 0x20;  // c1
+   move.promote   = SPACE;
+   move.capture   = SPACE;
+   move.moveType  = Move::CASTLE_QUEEN;
+   move.isWhite   = false;
 
    // EXERCISE
    string result = move.getText();
@@ -631,13 +732,13 @@ void TestMove::pieceTypeFromLetter_king()
   **************************************/
 void TestMove::equal_not()
 {
-   // SETUP
+   // SETUP - use raw colRow, do not assume Position assignment works
    Move move1;
-   move1.source = "b2";
-   move1.dest = "b4";
+   move1.source.colRow = 0x12;  // b2
+   move1.dest.colRow   = 0x14;  // b4
    Move move2;
-   move2.source = "b2";
-   move2.dest = "b5";
+   move2.source.colRow = 0x12;  // b2
+   move2.dest.colRow   = 0x15;  // b5
 
    // EXERCISE
    bool result = (move1 == move2);
@@ -653,11 +754,21 @@ void TestMove::equal_not()
   **************************************/
 void TestMove::equal_equals()
 {
-   // SETUP
+   // SETUP - use raw colRow so we do not assume read() or Position works
    Move move1;
-   move1.read("b2b4");
+   move1.source.colRow = 0x12;  // b2
+   move1.dest.colRow   = 0x14;  // b4
+   move1.promote = SPACE;
+   move1.capture = SPACE;
+   move1.moveType = Move::MOVE;
+   move1.isWhite = false;
    Move move2;
-   move2.read("b2b4");
+   move2.source.colRow = 0x12;
+   move2.dest.colRow   = 0x14;
+   move2.promote = SPACE;
+   move2.capture = SPACE;
+   move2.moveType = Move::MOVE;
+   move2.isWhite = false;
 
    // EXERCISE
    bool result = (move1 == move2);
@@ -698,11 +809,11 @@ void TestMove::lessthan_lessthan()
   **************************************/
 void TestMove::lessthan_equals()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move1;
-   move1.dest = "b4";
+   move1.dest.colRow = 0x14;  // b4
    Move move2;
-   move2.dest = "b4";
+   move2.dest.colRow = 0x14;  // b4
 
    // EXERCISE
    bool result = (move1 < move2);
@@ -718,15 +829,15 @@ void TestMove::lessthan_equals()
   **************************************/
 void TestMove::lessthan_greaterthan()
 {
-   // SETUP
+   // SETUP - use raw colRow
    Move move1;
-   move1.dest = "b4";
+   move1.dest.colRow = 0x14;  // b4
    Move move2;
-   move2.dest = "b2";
+   move2.dest.colRow = 0x12;  // b2
 
    // EXERCISE
    bool result = (move1 < move2);
 
-   // VERIFY
-   assertUnit(result == false);  // b4 is not < b2
+   // VERIFY - 0x14 is not < 0x12
+   assertUnit(result == false);
 }

@@ -34,6 +34,7 @@ const Delta SUB_C = { 0, -1};
 
 
 class PositionTest;
+class TestMove;
 
 /***************************************************
  * POSITION
@@ -42,6 +43,7 @@ class PositionTest;
 class Position
 {
    friend class PositionTest;
+   friend class TestMove;
 public:
 
    // Position :    The Position class can work with other positions,
