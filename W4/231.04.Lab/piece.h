@@ -2,7 +2,7 @@
  * Header File:
  *    PIECE 
  * Author:
-*    <your name here>
+*    Spencer Palmer
  * Summary:
  *    The Piece base class and all the derived classes:
  *       SPACE, KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN
@@ -58,17 +58,21 @@ public:
    virtual const Piece& operator = (const Piece& rhs);
 
    // getters
-   virtual bool operator == (PieceType pt) const { return true;         }
-   virtual bool operator != (PieceType pt) const { return true;         }
-   virtual bool isWhite()                  const { return true;         }
-   virtual bool isMoved()                  const { return true;         }
-   virtual int  getNMoves()                const { return 9999;         }
-   virtual void decrementNMoves()                {                      }
-   virtual const Position & getPosition()  const { return Position();   }
-   virtual bool justMoved(int currentMove) const { return true;         }
+   virtual bool operator == (PieceType pt) const { return pt == getType(); }
+   virtual bool operator != (PieceType pt) const { return pt != getType(); }
+   virtual bool isWhite()                  const { return fWhite == true;  }
+   virtual bool isMoved()                  const { return getNMoves();     }
+   virtual int  getNMoves()                const { return nMoves;          }
+   virtual void decrementNMoves()                { nMoves--;               }
+   virtual const Position & getPosition()  const { return position;        }
+   virtual bool justMoved(int currentMove) const { return lastMove == currentMove - 1; }
 
    // setter
-   virtual void setLastMove(int currentMove)     {                      }
+   virtual void setLastMove(int currentMove)
+   {
+      lastMove = currentMove;
+      nMoves++;
+   }
 
    // overwritten by the various pieces
    virtual PieceType getType()                                    const = 0;
@@ -93,7 +97,7 @@ class PieceDerived : public Piece
 {
 public:
    PieceDerived(const Position& pos, bool isWhite) : Piece(9, 9) { }
-   PieceDerived(int c, int r, bool isWhite) : Piece(9, 9)        { }
+   PieceDerived(int c, int r, bool isWhite) : Piece(c, r)        { }
    ~PieceDerived()                                                       { }
    PieceType getType()            const     { return SPACE;                }
    void display(ogstream* pgout)  const     { assert(false);               }

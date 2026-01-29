@@ -2,7 +2,7 @@
  * Source File:
  *    PIECE 
  * Author:
- *    <your name here>
+ *    Spencer Palmer
  * Summary:
  *    The Piece base class and all the derived classes:
  *       SPACE, KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN
@@ -23,7 +23,12 @@ using namespace std;
  ***********************************************/
 const Piece & Piece::operator = (const Piece & rhs)
 {
-
+   if (this != &rhs)
+   {
+      fWhite = rhs.fWhite;
+      lastMove = rhs.lastMove;
+      nMoves = rhs.nMoves;
+   }
    return *this;
 }
 
