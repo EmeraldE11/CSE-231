@@ -25,12 +25,22 @@ const Piece & Piece::operator = (const Piece & rhs)
 {
    if (this != &rhs)
    {
+	  position = rhs.position;
       fWhite = rhs.fWhite;
       lastMove = rhs.lastMove;
       nMoves = rhs.nMoves;
    }
    return *this;
 }
+
+Piece::Piece(int c, int r, bool isWhite)
+{
+    position = Position(c, r);
+    fWhite = isWhite;
+    nMoves = 0;
+    lastMove = -1;
+}
+
 
 /************************************************
  * PIECE : GET MOVES
