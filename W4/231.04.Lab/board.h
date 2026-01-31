@@ -2,7 +2,7 @@
  * Header File:
  *    BOARD 
  * Author:
- *    <your name here>
+ *    Spencer Palmer
  * Summary:
  *    A collection of pieces and a small amount of game state
  ************************************************************************/
@@ -46,8 +46,8 @@ public:
    virtual ~Board()   {  }
 
    // getters
-   virtual int  getCurrentMove() const { return -99;      }
-   virtual bool whiteTurn()      const { return false;  }
+   virtual int  getCurrentMove() const { return numMoves; }
+   virtual bool whiteTurn()      const { return numMoves % 2 == 0; }
    virtual void display(const Position& posHover, const Position& posSelect) const;
    virtual const Piece& operator [] (const Position& pos) const;
 
@@ -56,6 +56,12 @@ public:
    virtual void reset(bool fFree = true);
    virtual void move(const Move & move);
    virtual Piece& operator [] (const Position& pos);
+   Board() : numMoves(0)
+   {
+       for (int c = 0; c < 8; c++)
+           for (int r = 0; r < 8; r++)
+               board[c][r] = nullptr;
+   }
 
 protected:
    void  assertBoard();

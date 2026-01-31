@@ -16,7 +16,6 @@
 
 class TestMove;
 class TestBoard;
-class TestKnight;
 
 /***************************************************
  * MOVE
@@ -24,35 +23,56 @@ class TestKnight;
  ***************************************************/
 class Move
 {
+	friend class TestKnight;
 public:
-   enum MoveType { MOVE, ENPASSANT, CASTLE_KING, CASTLE_QUEEN, MOVE_ERROR };
+	enum MoveType { MOVE, ENPASSANT, CASTLE_KING, CASTLE_QUEEN, MOVE_ERROR };
 
-   friend TestMove;
-   friend TestBoard;
-   friend TestKnight;
+	friend TestMove;
+	friend TestBoard;
 
-   // constructor
-   Move();
-   Move(const string & rhs) {}
-   bool operator<(const Move & rhs) const { return true; }
-   bool operator==(const Move& rhs) const { return true; }
-   void read(const string & rhs) {}
-   string getText() const { return std::string(""); }
+	// constructor
+	Move();
+	Move(const string& rhs);
 
+	// comparison operators
+	bool operator==(const Move& rhs) const;
+	bool operator<(const Move& rhs) const;
+
+	// text operations
+	void read(const string& rhs);
+	const Move& operator=(const string& rhs);
+	string getText() const;
+
+	// getters
+	Position getSrc() const { return source; }
+	Position getDes() const { return dest; }
+	PieceType getCapture() const { return capture; }
+	PieceType getPromotion() const { return promote; }
+	MoveType getMoveType() const { return moveType; }
+	bool getWhiteMove() const { return isWhite; }
+
+	// setters
+	void setSrc(const Position& pos) { source = pos; }
+	void setDes(const Position& pos) { dest = pos; }
+	void setCapture(PieceType pt) { capture = pt; }
+	void setPromotion(PieceType pt) { promote = pt; }
+	void setEnPassant() { moveType = ENPASSANT; }
+	void setCastle(bool isKing);
+	void setWhiteMove(bool white) { isWhite = white; }
 
 private:
-   char letterFromPieceType(PieceType pt)     const { return 'z'; }
-   PieceType pieceTypeFromLetter(char letter) const { return SPACE; }
+	char letterFromPieceType(PieceType pt)     const;
+	PieceType pieceTypeFromLetter(char letter) const;
 
 
 
-   Position  source;    // where the move originated from
-   Position  dest;      // where the move finished
-   PieceType promote;   // piece to be promoted to
-   PieceType capture;   // did a capture happen this move?
-   MoveType  moveType;  // what type of move is this?
-   bool      isWhite;   // whose turn is it anyway?
-   string    text;      // what is the textual version of the move?
+	Position  source;    // where the move originated from
+	Position  dest;      // where the move finished
+	PieceType promote;   // piece to be promoted to
+	PieceType capture;   // did a capture happen this move?
+	MoveType  moveType;  // what type of move is this?
+	bool      isWhite;   // whose turn is it anyway?
+	string    text;      // what is the textual version of the move?
 };
 
 

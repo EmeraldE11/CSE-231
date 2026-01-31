@@ -2,7 +2,7 @@
  * Source File:
  *    BOARD 
  * Author:
- *    <your name here>
+ *    Spencer Palmer
  * Summary:
  *    A collection of pieces and a small amount of game state
  ************************************************************************/
@@ -15,6 +15,7 @@
 #include "pieceKnight.h"
 #include <cassert>
 using namespace std;
+
 
 
 /***********************************************
@@ -36,13 +37,34 @@ using namespace std;
 void Board::reset(bool fFree)
 {
    // free everything
+   if (fFree)
+      free();
+   
    for (int r = 0; r < 8; r++)
       for (int c = 0; c < 8; c++)
-         board[c][r] = nullptr;
-}
+         board[c][r] = new Space(c, r);
+   
+   // White Pieces
+//   board[0][0] = new Rook(0, 0, true);
+   board[1][0] = new Knight(1, 0, true);
+//   board[2][0] = new Bishop(2, 0, true);
+//   board[3][0] = new Queen(3, 0, true);
+//   board[4][0] = new King(4, 0, true);
+//   board[5][0] = new Bishop(5, 0, true);
+   board[6][0] = new Knight(6, 0, true);
+//   board[7][0] = new Rook(7, 0, true);
 
-// we really REALLY need to delete this.
-Space space(0,0);
+   // Black Pieces
+//   board[0][7] = new Rook(0, 7, false);
+   board[1][7] = new Knight(1, 7, false);
+//   board[2][7] = new Bishop(2, 7, false);
+//   board[3][7] = new Queen(3, 7, false);
+//   board[4][7] = new King(4, 7, false);
+//   board[5][7] = new Bishop(5, 7, false);
+   board[6][7] = new Knight(6, 7, false);
+//   board[7][7] = new Rook(7, 7, false);
+   
+}
 
 /***********************************************
 * BOARD : GET
@@ -50,11 +72,13 @@ Space space(0,0);
 ***********************************************/
 const Piece& Board::operator [] (const Position& pos) const
 {
-   return space;
+    assert(board[pos.getCol()][pos.getRow()]);
+    return *(board[pos.getCol()][pos.getRow()]);
 }
 Piece& Board::operator [] (const Position& pos)
 {
-   return space;
+    assert(board[pos.getCol()][pos.getRow()]);
+    return *(board[pos.getCol()][pos.getRow()]);
 }
 
  /***********************************************
@@ -64,6 +88,35 @@ Piece& Board::operator [] (const Position& pos)
 void Board::display(const Position & posHover, const Position & posSelect) const
 {
    
+   assert(pgout != nullptr);
+
+   // draw squares
+   pgout->drawBoard();
+   
+   if (posSelect.isValid())
+       pgout->drawSelected(posSelect);
+
+   if (posHover.isValid())
+       pgout->drawHover(posHover);
+
+   for (int row = 0; row < 8; row++)
+   {
+       for (int col = 0; col < 8; col++)
+       {
+          Position pos(col, row);
+          Piece* pPiece = board[col][row];
+
+          if (pPiece != nullptr)
+          {
+             switch (pPiece->getType())
+             {
+                case KNIGHT: pgout->drawKnight(pos, pPiece->isWhite()); break;
+                case SPACE:  break; // empty square, nothing to draw
+                default: assert(false); // unknown type
+             }
+          }
+       }
+   }
 }
 
 
@@ -73,7 +126,13 @@ void Board::display(const Position & posHover, const Position & posSelect) const
  ************************************************/
 Board::Board(ogstream* pgout, bool noreset) : pgout(pgout), numMoves(0)
 {
-
+   
+   for (int r = 0; r < 8; r++)
+      for (int c = 0; c < 8; c++)
+         board[c][r] = nullptr;
+   
+   if (!noreset)
+      reset(false);
 }
 
 
@@ -83,7 +142,17 @@ Board::Board(ogstream* pgout, bool noreset) : pgout(pgout), numMoves(0)
  ************************************************/
 void Board::free()
 {
-
+   for (int r = 0; r < 8; r++)
+   {
+      for (int c = 0; c < 8; c++)
+      {
+         if (board[c][r] != nullptr)
+         {
+            delete board[c][r];
+            board[c][r] = nullptr;
+         }
+      }
+   }
 }
 
 
@@ -93,7 +162,14 @@ void Board::free()
  *********************************************/
 void Board::assertBoard()
 {
-
+   for (int r = 0; r < 8; r++)
+   {
+      for (int c = 0; c < 8; c++)
+      {
+         // Every square must contain a valid Piece
+         assert(board[c][r] != nullptr);
+      }
+   }
 }
 
 
@@ -107,6 +183,26 @@ void Board::assertBoard()
 void Board::move(const Move & move)
 {  
 
+   // increment move counter
+   numMoves++;
+   
+   Position src = move.getSrc();
+   Position des = move.getDes();
+
+   int srcCol = src.getCol();
+   int srcRow = src.getRow();
+   int dstCol = des.getCol();
+   int dstRow = des.getRow();
+
+   // create move pointer
+   Piece* pMoving = board[srcCol][srcRow];
+
+   // destination becomes moving piece
+   board[dstCol][dstRow] = pMoving;
+
+   // source becomes SPACE
+   board[srcCol][srcRow] = new Space(srcCol, srcRow);
+   
 }
 
 
