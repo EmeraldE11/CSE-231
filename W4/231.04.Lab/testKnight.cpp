@@ -47,7 +47,7 @@ void TestKnight::getMoves_end()
    g1e2p.setWhiteMove(true);
    Move g1h3;
    g1h3.source.colRow = 0x60;
-   g1h3.dest.colRow = 0x52;
+   g1h3.dest.colRow = 0x72;
    g1h3.capture = SPACE;
    g1h3.setWhiteMove(true);
 
@@ -57,7 +57,7 @@ void TestKnight::getMoves_end()
    // VERIFY
    assertUnit(moves.size() == 2);  // many possible moves
    assertUnit(moves.find(g1e2p) != moves.end());
-   assertUnit(moves.find(g1h3 ) != moves.end());
+   assertUnit(moves.find(g1h3) != moves.end());
 
    // TEARDOWN
    board.board[6][0] = nullptr; // white knight
