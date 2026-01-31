@@ -37,9 +37,12 @@ using namespace std;
 void Board::reset(bool fFree)
 {
    // free everything
+   if (fFree)
+      free();
+   
    for (int r = 0; r < 8; r++)
       for (int c = 0; c < 8; c++)
-         board[c][r] = nullptr;
+         board[c][r] = new Space(c, r);
    
    // White Pieces
 //   board[0][0] = new Rook(0, 0, true);
@@ -63,9 +66,6 @@ void Board::reset(bool fFree)
    
 }
 
-// we really REALLY need to delete this.
-//Space space(0,0);
-
 /***********************************************
 * BOARD : GET
 *         Get a piece from a given position.
@@ -88,6 +88,35 @@ Piece& Board::operator [] (const Position& pos)
 void Board::display(const Position & posHover, const Position & posSelect) const
 {
    
+   assert(pgout != nullptr);
+
+   // draw squares
+   pgout->drawBoard();
+   
+   if (posSelect.isValid())
+       pgout->drawSelected(posSelect);
+
+   if (posHover.isValid())
+       pgout->drawHover(posHover);
+
+   for (int row = 0; row < 8; row++)
+   {
+       for (int col = 0; col < 8; col++)
+       {
+          Position pos(col, row);
+          Piece* pPiece = board[col][row];
+
+          if (pPiece != nullptr)
+          {
+             switch (pPiece->getType())
+             {
+                case KNIGHT: pgout->drawKnight(pos, pPiece->isWhite()); break;
+                case SPACE:  break; // empty square, nothing to draw
+                default: assert(false); // unknown type
+             }
+          }
+       }
+   }
 }
 
 
@@ -108,7 +137,17 @@ Board::Board(ogstream* pgout, bool noreset) : pgout(pgout), numMoves(0)
  ************************************************/
 void Board::free()
 {
-
+   for (int r = 0; r < 8; r++)
+      {
+         for (int c = 0; c < 8; c++)
+         {
+            if (board[c][r] != nullptr)
+            {
+               delete board[c][r];
+               board[c][r] = nullptr;
+            }
+         }
+      }
 }
 
 
@@ -118,7 +157,14 @@ void Board::free()
  *********************************************/
 void Board::assertBoard()
 {
-
+   for (int r = 0; r < 8; r++)
+   {
+      for (int c = 0; c < 8; c++)
+      {
+         // Every square must contain a valid Piece
+         assert(board[c][r] != nullptr);
+      }
+   }
 }
 
 
