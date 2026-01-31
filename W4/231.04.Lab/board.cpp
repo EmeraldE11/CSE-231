@@ -126,6 +126,11 @@ void Board::display(const Position & posHover, const Position & posSelect) const
  ************************************************/
 Board::Board(ogstream* pgout, bool noreset) : pgout(pgout), numMoves(0)
 {
+   
+   for (int r = 0; r < 8; r++)
+      for (int c = 0; c < 8; c++)
+         board[c][r] = nullptr;
+   
    if (!noreset)
       reset(false);
 }
@@ -138,16 +143,16 @@ Board::Board(ogstream* pgout, bool noreset) : pgout(pgout), numMoves(0)
 void Board::free()
 {
    for (int r = 0; r < 8; r++)
+   {
+      for (int c = 0; c < 8; c++)
       {
-         for (int c = 0; c < 8; c++)
+         if (board[c][r] != nullptr)
          {
-            if (board[c][r] != nullptr)
-            {
-               delete board[c][r];
-               board[c][r] = nullptr;
-            }
+            delete board[c][r];
+            board[c][r] = nullptr;
          }
       }
+   }
 }
 
 
