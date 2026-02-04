@@ -108,7 +108,7 @@
       <AdditionalIncludeDirectories>C:\Libraries\freeglut\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Libraries\freeglut\freeglut\lib\x64</AdditionalLibraryDirectories>
     </Link>
