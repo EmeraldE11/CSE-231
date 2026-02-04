@@ -102,13 +102,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)_HAS_STD_BYTE=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Libraries\freeglut\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Libraries\freeglut\freeglut\lib\x64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,7 +132,12 @@
     <ClInclude Include="board.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="piece.h" />
+    <ClInclude Include="pieceBishop.h" />
+    <ClInclude Include="pieceKing.h" />
     <ClInclude Include="pieceKnight.h" />
+    <ClInclude Include="piecePawn.h" />
+    <ClInclude Include="pieceQueen.h" />
+    <ClInclude Include="pieceRook.h" />
     <ClInclude Include="pieceSpace.h" />
     <ClInclude Include="pieceType.h" />
     <ClInclude Include="position.h" />
@@ -170,6 +177,9 @@
     <ClCompile Include="testRook.cpp" />
     <ClCompile Include="uiDraw.cpp" />
     <ClCompile Include="uiInteract.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vcpkg.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

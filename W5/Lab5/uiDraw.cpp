@@ -10,6 +10,12 @@
  *    (variables) or a mixture (objects)
  ************************************************************************/
 
+#define _HAS_STD_BYTE 0
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef byte
+
 
 #include <string>     // need you ask?
 #include <sstream>    // convert an integer into text

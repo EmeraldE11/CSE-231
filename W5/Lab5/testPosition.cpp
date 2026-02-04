@@ -1016,7 +1016,7 @@ void PositionTest::getWidth_10()
 
    pos.squareWidth = 10;
    pos.squareHeight = 99;
-   int w = -99;
+   double w = -99.0;
 
    // EXERCISE
    w = pos.getSquareWidth();
@@ -1038,7 +1038,7 @@ void PositionTest::getHeight_10()
 
    pos.squareWidth = 99;
    pos.squareHeight = 10;
-   int h = -99;
+   double h = -99.0;
 
    // EXERCISE
    h = pos.getSquareHeight();
