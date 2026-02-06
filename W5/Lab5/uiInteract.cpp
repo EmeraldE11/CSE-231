@@ -31,7 +31,7 @@
 #ifdef _WIN32
 #include <stdio.h>
 #include <stdlib.h>
-#include <Gl/glut.h>           // OpenGL library we copied
+#include <GL/glut.h>           // OpenGL library we copied
 #include <ctime>            // for ::Sleep();
 #include <Windows.h>
 
