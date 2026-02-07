@@ -27,6 +27,7 @@ void Pawn::getMoves(set <Move>& moves, const Board& board) const
    int startRow = fWhite ? 1 : 6;
    int promotionRow = fWhite ? 7 : 0;
 
+   // Forward move: one square (and two from start). Non-capture; promote on last rank.
    Position forward(position, Delta(0, direction));
    if (forward.isValid())
    {
@@ -64,6 +65,7 @@ void Pawn::getMoves(set <Move>& moves, const Board& board) const
       }
    }
 
+   // Diagonal capture left; promote on last rank.
    Position captureLeft(position, Delta(-1, direction));
    if (captureLeft.isValid())
    {
@@ -83,6 +85,7 @@ void Pawn::getMoves(set <Move>& moves, const Board& board) const
       }
    }
 
+   // Diagonal capture right; promote on last rank.
    Position captureRight(position, Delta(1, direction));
    if (captureRight.isValid())
    {
@@ -102,6 +105,7 @@ void Pawn::getMoves(set <Move>& moves, const Board& board) const
       }
    }
 
+   // En passant: pawn on 5th rank (white) or 4th (black); enemy pawn on adjacent file just moved two.
    int currentMove = board.getCurrentMove();
    if (currentRow == (fWhite ? 4 : 3))
    {

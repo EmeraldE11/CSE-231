@@ -21,6 +21,7 @@ void King::getMoves(set <Move>& moves, const Board& board) const
    if (!position.isValid())
       return;
 
+   // One-square moves in any direction: non-capture and capture.
    Delta directions[8] = {
       {1, 1}, {1, 0}, {1, -1},
       {0, 1}, {0, -1},
@@ -54,10 +55,12 @@ void King::getMoves(set <Move>& moves, const Board& board) const
       }
    }
 
+   // Castling: only if king has never moved.
    if (getNMoves() == 0)
    {
       if (fWhite)
       {
+         // White king on e1: queen-side (a1 rook) and king-side (h1 rook).
          if (position.getRow() == 0 && position.getCol() == 4)
          {
             const Piece& rook1 = board[Position(0, 0)];
@@ -95,6 +98,7 @@ void King::getMoves(set <Move>& moves, const Board& board) const
       }
       else
       {
+         // Black king on e8: queen-side (a8 rook) and king-side (h8 rook).
          if (position.getRow() == 7 && position.getCol() == 4)
          {
             const Piece& rook1 = board[Position(0, 7)];
