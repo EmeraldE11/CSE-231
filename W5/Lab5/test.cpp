@@ -12,6 +12,7 @@
 #include "testSpace.h"
 #include "testKnight.h"
 #include "testBishop.h"
+#include "testRook.h"
 #include "testPosition.h"
 #include "testBoard.h"
 #include "testMove.h"
@@ -56,4 +57,5 @@ void testRunner()
    TestSpace().run();
    TestKnight().run();
    TestBishop().run();
+   TestRook().run();
 }
