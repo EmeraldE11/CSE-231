@@ -31,6 +31,8 @@
 		DEAC4EBC2F37D7BA0086ECA1 /* pieceKing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEAC4EA82F37D7BA0086ECA1 /* pieceKing.cpp */; };
 		DEAC4EBD2F37D7BA0086ECA1 /* testPawn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEAC4EB22F37D7BA0086ECA1 /* testPawn.cpp */; };
 		DEAC4EBE2F37D7BA0086ECA1 /* pieceQueen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEAC4EAC2F37D7BA0086ECA1 /* pieceQueen.cpp */; };
+		DEAC4EC32F37DC8B0086ECA1 /* pieceRook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEAC4EC22F37DC8B0086ECA1 /* pieceRook.cpp */; };
+		DEAC4EC42F37DC8B0086ECA1 /* pieceBishop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEAC4EC02F37DC8B0086ECA1 /* pieceBishop.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -96,6 +98,10 @@
 		DEAC4EB42F37D7BA0086ECA1 /* testQueen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testQueen.cpp; sourceTree = "<group>"; };
 		DEAC4EB52F37D7BA0086ECA1 /* testRook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testRook.h; sourceTree = "<group>"; };
 		DEAC4EB62F37D7BA0086ECA1 /* testRook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testRook.cpp; sourceTree = "<group>"; };
+		DEAC4EBF2F37DC8B0086ECA1 /* pieceBishop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pieceBishop.h; sourceTree = "<group>"; };
+		DEAC4EC02F37DC8B0086ECA1 /* pieceBishop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pieceBishop.cpp; sourceTree = "<group>"; };
+		DEAC4EC12F37DC8B0086ECA1 /* pieceRook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pieceRook.h; sourceTree = "<group>"; };
+		DEAC4EC22F37DC8B0086ECA1 /* pieceRook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pieceRook.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +137,10 @@
 				DEAC4EAE2F37D7BA0086ECA1 /* testBishop.cpp */,
 				DEAC4EAF2F37D7BA0086ECA1 /* testKing.h */,
 				DEAC4EB02F37D7BA0086ECA1 /* testKing.cpp */,
+				DEAC4EBF2F37DC8B0086ECA1 /* pieceBishop.h */,
+				DEAC4EC02F37DC8B0086ECA1 /* pieceBishop.cpp */,
+				DEAC4EC12F37DC8B0086ECA1 /* pieceRook.h */,
+				DEAC4EC22F37DC8B0086ECA1 /* pieceRook.cpp */,
 				DEAC4EB12F37D7BA0086ECA1 /* testPawn.h */,
 				DEAC4EB22F37D7BA0086ECA1 /* testPawn.cpp */,
 				DEAC4EB32F37D7BA0086ECA1 /* testQueen.h */,
@@ -210,7 +220,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					C1EE0D722B28F39600E5D6E1 = {
 						CreatedOnToolsVersion = 15.1;
@@ -258,6 +268,8 @@
 				DEAC4EBD2F37D7BA0086ECA1 /* testPawn.cpp in Sources */,
 				DEAC4EBE2F37D7BA0086ECA1 /* pieceQueen.cpp in Sources */,
 				C1EE0DA72B28F3C600E5D6E1 /* move.cpp in Sources */,
+				DEAC4EC32F37DC8B0086ECA1 /* pieceRook.cpp in Sources */,
+				DEAC4EC42F37DC8B0086ECA1 /* pieceBishop.cpp in Sources */,
 				C1EE0D9F2B28F3C600E5D6E1 /* uiInteract.cpp in Sources */,
 				C1EE0DA82B28F3C600E5D6E1 /* testPosition.cpp in Sources */,
 				C1EE0DA52B28F3C600E5D6E1 /* testBoard.cpp in Sources */,
@@ -302,6 +314,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -326,6 +339,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
 			name = Debug;
 		};
@@ -363,6 +377,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -380,6 +395,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
 			name = Release;
 		};
@@ -387,6 +403,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -395,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
