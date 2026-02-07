@@ -52,7 +52,7 @@ void testRunner()
    // unit tests
    PositionTest().run();
    TestMove().run();
-   //TestBoard().run();
+   TestBoard().run();
    TestPiece().run();
    TestSpace().run();
    TestKnight().run();

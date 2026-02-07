@@ -192,7 +192,7 @@ void TestBoard::move_pawnEnpassant()
    Move a5b6;
    a5b6.source.colRow = 0x04;
    a5b6.dest.colRow = 0x15;
-   a5b6.capture = PAWN;
+   a5b6.capture = SPACE;
    a5b6.promote = SPACE;
    a5b6.isWhite = true;
    a5b6.moveType = Move::ENPASSANT;
@@ -200,6 +200,7 @@ void TestBoard::move_pawnEnpassant()
    board.numMoves = 17;
    board.board[0][4] = new PieceSpy(0, 4, true  /*isWhite*/, PAWN);
    board.board[1][4] = new PieceSpy(1, 4, false /*isWhite*/, PAWN);
+   board.board[1][5] = new PieceSpy(1, 5, false /*isWhite*/, SPACE);
    board.board[0][4]->nMoves = 17;
    PieceSpy::reset();
 
@@ -208,6 +209,7 @@ void TestBoard::move_pawnEnpassant()
 
    // VERIFY
    assertUnit(18 == board.numMoves);
+   assertUnit(SPACE == (board.board[0][4])->getType());
    assertUnit(SPACE == (board.board[1][4])->getType());
    assertUnit(PAWN == (board.board[1][5])->getType());
    assertUnit(PieceSpy::numConstruct == 0);
@@ -217,9 +219,10 @@ void TestBoard::move_pawnEnpassant()
    assertUnit(PieceSpy::numMove == 0);
 
    // TEARDOWN
+   delete board.board[0][4];
    delete board.board[1][4];
    delete board.board[1][5];
-   board.board[1][5] = board.board[1][4] = nullptr;
+   board.board[0][4] = board.board[1][5] = board.board[1][4] = nullptr;
 }
 
 
