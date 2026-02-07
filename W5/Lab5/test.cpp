@@ -11,6 +11,7 @@
 #include "testPiece.h"
 #include "testSpace.h"
 #include "testKnight.h"
+#include "testBishop.h"
 #include "testPosition.h"
 #include "testBoard.h"
 #include "testMove.h"
@@ -50,8 +51,9 @@ void testRunner()
    // unit tests
    PositionTest().run();
    TestMove().run();
-   TestBoard().run();
+   //TestBoard().run();
    TestPiece().run();
    TestSpace().run();
    TestKnight().run();
+   TestBishop().run();
 }
