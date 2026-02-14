@@ -30,12 +30,34 @@ using namespace std;
  **************************************/
 void callBack(Interface *pUI, void * p)
 {
-   // the first step is to cast the void pointer into a game object. This
-   // is the first step of every single callback function in OpenGL. 
    Board * pBoard = (Board *)p;
 
-   Position emptyPos;
-   pBoard->display(emptyPos, emptyPos);
+   Position posHover = pUI->getHoverPosition();
+   Position posSelect = pUI->getSelectPosition();
+   Position posSelectPrevious = pUI->getPreviousPosition();
+
+   // If user clicked two different squares, try to execute a move (source = previous, dest = current)
+   if (posSelect.isValid() && posSelectPrevious.isValid() && posSelect != posSelectPrevious)
+   {
+      const Piece& pieceSrc = (*pBoard)[posSelectPrevious];
+      if (pieceSrc.getType() != SPACE && pieceSrc.isWhite() == pBoard->whiteTurn())
+      {
+         set<Move> moves;
+         pieceSrc.getMoves(moves, *pBoard);
+         for (const Move& move : moves)
+         {
+            if (move.getDes() == posSelect)
+            {
+               pBoard->move(move);
+               pUI->clearSelectPosition();
+               pUI->clearPreviousPosition();
+               break;
+            }
+         }
+      }
+   }
+
+   pBoard->display(posHover, posSelect);
 }
 
 

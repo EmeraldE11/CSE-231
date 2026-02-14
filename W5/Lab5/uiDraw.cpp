@@ -10,12 +10,6 @@
  *    (variables) or a mixture (objects)
  ************************************************************************/
 
-#define _HAS_STD_BYTE 0
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#undef byte
-
 
 #include <string>     // need you ask?
 #include <sstream>    // convert an integer into text
@@ -35,6 +29,13 @@
 #include <GL/gl.h>        // Main OpenGL library
 #include <GL/glut.h>      // Second OpenGL library
 #define GLUT_TEXT GLUT_BITMAP_HELVETICA_12
+
+#define _HAS_STD_BYTE 0
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef byte
+
 #endif // __linux__
 
 #ifdef _WIN32
@@ -44,6 +45,13 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #define GLUT_TEXT GLUT_BITMAP_HELVETICA_12
+
+#define _HAS_STD_BYTE 0
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef byte
+
 #endif // _WIN32
 
 
@@ -52,7 +60,7 @@
 
 using namespace std;
 
-// pieces: black and white
+// pieces: isWhite and white
 const int RGB_WHITE[] = { 255, 255, 255 };
 const int RGB_BLACK[] = { 0, 0, 0 };
 
@@ -154,10 +162,10 @@ void glColor(const int * rgb)
 * DRAW Piece
 * Draw a piece at a certain location on the board, in ortho coordinates
 *   INPUT  location   The location of the piece
-*          black      Whether the piece is black
+*          isWhite      Whether the piece is white
 *          rectangles The rectangles of the piece
 *************************************************************************/
-void ogstream::drawPiece(bool black, Rect rectangle[], int num) const
+void ogstream::drawPiece(bool isWhite, Rect rectangle[], int num) const
 {
    assert(position.isValid());
    GLint x   = (GLint)((position.getCol() + 0.5) * 
@@ -167,7 +175,7 @@ void ogstream::drawPiece(bool black, Rect rectangle[], int num) const
 
    // get ready to draw
    glBegin(GL_QUADS);
-   glColor(black ? RGB_BLACK : RGB_WHITE);
+   glColor(isWhite ? RGB_WHITE : RGB_BLACK);
 
    // iterate through the rectangles
    for (int i = 0; i < num; i++)
@@ -186,9 +194,9 @@ void ogstream::drawPiece(bool black, Rect rectangle[], int num) const
 * DRAW King
 * Draw a king at a certain location on the board
 *   INPUT  location  The location of the king
-*          black     Whether the king is black
+*          isWhite     Whether the king is white
 *************************************************************************/
-void ogstream::drawKing(const Position& pos, bool black)
+void ogstream::drawKing(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -202,16 +210,16 @@ void ogstream::drawKing(const Position& pos, bool black)
    };
    
    position = pos;
-   drawPiece(black, rectangles, 7);
+   drawPiece(isWhite, rectangles, 7);
 }
 
 /************************************************************************
 * DRAW Queen
 * Draw a queen at a certain location on the board
 *   INPUT  location  The location of the queen
-*          black     Whether the queen is black
+*          isWhite     Whether the queen is white
 *************************************************************************/
-void ogstream::drawQueen(const Position& pos, bool black)
+void ogstream::drawQueen(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -227,16 +235,16 @@ void ogstream::drawQueen(const Position& pos, bool black)
    };
 
    position = pos;
-   drawPiece(black, rectangles, 9);
+   drawPiece(isWhite, rectangles, 9);
 }
 
 /************************************************************************
 * DRAW Rook
 * Draw a Rook at a certain location on the board
 *   INPUT  location  The location of the Rook
-*          black     Whether the knight is castle
+*          isWhite     Whether the Rook is white
 *************************************************************************/
-void ogstream::drawRook(const Position& pos, bool black)
+void ogstream::drawRook(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -248,16 +256,16 @@ void ogstream::drawRook(const Position& pos, bool black)
    };
 
    position = pos;
-   drawPiece(black, rectangles, 5);
+   drawPiece(isWhite, rectangles, 5);
 }
 
 /************************************************************************
 * DRAW Knight
 * Draw a knight at a certain location on the board
 *   INPUT  location  The location of the knight
-*          black     Whether the knight is black
+*          isWhite     Whether the knight is white
 *************************************************************************/
-void ogstream::drawKnight(const Position& pos, bool black)
+void ogstream::drawKnight(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -270,16 +278,16 @@ void ogstream::drawKnight(const Position& pos, bool black)
    };
 
    position = pos;
-   drawPiece(black, rectangles, 5);
+   drawPiece(isWhite, rectangles, 5);
 }
 
 /************************************************************************
 * DRAW Bishop
 * Draw a Bishop at a certain location on the board
 *   INPUT  location  The location of the Bishop
-*          black     Whether the knight is Bishop
+*          isWhite     Whether the Bishop is white
 *************************************************************************/
-void ogstream::drawBishop(const Position& pos, bool black)
+void ogstream::drawBishop(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -292,16 +300,16 @@ void ogstream::drawBishop(const Position& pos, bool black)
    };
 
    position = pos;
-   drawPiece(black, rectangles, 6);
+   drawPiece(isWhite, rectangles, 6);
 }
 
 /************************************************************************
 * DRAW PAWN
 * Draw a pawn at a certain location on the board
 *   INPUT  location  The location of the pawn
-*          black     Whether the pawn is black
+*          isWhite     Whether the pawn is white
 *************************************************************************/
-void ogstream::drawPawn(const Position& pos, bool black)
+void ogstream::drawPawn(const Position& pos, bool isWhite)
 {
    Rect rectangles[] =
    {
@@ -312,7 +320,7 @@ void ogstream::drawPawn(const Position& pos, bool black)
    };
 
    position = pos;
-   drawPiece(black, rectangles, 4);
+   drawPiece(isWhite, rectangles, 4);
 }
 
 /************************************************************************
