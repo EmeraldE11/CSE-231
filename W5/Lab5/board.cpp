@@ -11,6 +11,7 @@
 #include "uiDraw.h"
 #include "position.h"
 #include "piece.h"
+#include "pieceType.h"
 #include "pieceSpace.h"
 #include "pieceKnight.h"
 #include "pieceBishop.h"
@@ -18,7 +19,9 @@
 #include "pieceKing.h"
 #include "pieceQueen.h"
 #include "piecePawn.h"
+#include "move.h"
 #include <cassert>
+#include <set>
 using namespace std;
 
 
@@ -101,9 +104,20 @@ void Board::display(const Position & posHover, const Position & posSelect) const
 
    // draw squares
    pgout->drawBoard();
-   
+
+   // when a piece is selected, show its possible moves (red squares) as in the spec
    if (posSelect.isValid())
-       pgout->drawSelected(posSelect);
+   {
+      const Piece& pieceSelected = (*this)[posSelect];
+      if (pieceSelected.getType() != SPACE && pieceSelected.isWhite() == whiteTurn())
+      {
+         set<Move> possibleMoves;
+         pieceSelected.getMoves(possibleMoves, *this);
+         for (const Move& move : possibleMoves)
+            pgout->drawPossible(move.getDes());
+      }
+      pgout->drawSelected(posSelect);
+   }
 
    if (posHover.isValid())
        pgout->drawHover(posHover);
@@ -191,32 +205,86 @@ void Board::assertBoard()
 
 /**********************************************
  * BOARD : MOVE
- *         Execute a move according to the contained instructions
+ *         Execute a move according to the contained instructions.
+ *         Handles simple moves, captures, castling, en passant, promotion.
  *   INPUT move The instructions of the move
  *********************************************/
 void Board::move(const Move & move)
-{  
-
-   // increment move counter
+{
    numMoves++;
-   
+
    Position src = move.getSrc();
    Position des = move.getDes();
-
    int srcCol = src.getCol();
    int srcRow = src.getRow();
    int dstCol = des.getCol();
    int dstRow = des.getRow();
-
-   // create move pointer
    Piece* pMoving = board[srcCol][srcRow];
+   Move::MoveType moveType = move.getMoveType();
 
-   // destination becomes moving piece
+   // En passant: remove the captured pawn (the one that was passed over)
+   if (moveType == Move::ENPASSANT)
+   {
+      int capCol = des.getCol();
+      int capRow = src.getRow();
+      if (board[capCol][capRow] != nullptr)
+      {
+         delete board[capCol][capRow];
+         board[capCol][capRow] = new Space(capCol, capRow);
+      }
+   }
+
+   // Capture or clear destination before placing moving piece
+   if (board[dstCol][dstRow] != nullptr)
+   {
+      delete board[dstCol][dstRow];
+      board[dstCol][dstRow] = nullptr;
+   }
+
+   // Move the piece
    board[dstCol][dstRow] = pMoving;
-
-   // source becomes SPACE
+   pMoving->setPosition(des);
+   pMoving->setLastMove(numMoves);
    board[srcCol][srcRow] = new Space(srcCol, srcRow);
-   
+
+   // Castling: move the rook
+   if (moveType == Move::CASTLE_KING)
+   {
+      int rookSrcCol = 7, rookDstCol = 5;
+      int row = srcRow;
+      Piece* pRook = board[rookSrcCol][row];
+      if (pRook != nullptr)
+      {
+         delete board[rookDstCol][row];
+         board[rookDstCol][row] = pRook;
+         pRook->setPosition(Position(rookDstCol, row));
+         pRook->setLastMove(numMoves);
+         board[rookSrcCol][row] = new Space(rookSrcCol, row);
+      }
+   }
+   else if (moveType == Move::CASTLE_QUEEN)
+   {
+      int rookSrcCol = 0, rookDstCol = 3;
+      int row = srcRow;
+      Piece* pRook = board[rookSrcCol][row];
+      if (pRook != nullptr)
+      {
+         delete board[rookDstCol][row];
+         board[rookDstCol][row] = pRook;
+         pRook->setPosition(Position(rookDstCol, row));
+         pRook->setLastMove(numMoves);
+         board[rookSrcCol][row] = new Space(rookSrcCol, row);
+      }
+   }
+
+   // Pawn promotion: replace with Queen when reaching last rank (per spec)
+   if (pMoving->getType() == PAWN && (dstRow == 0 || dstRow == 7))
+   {
+      bool white = pMoving->isWhite();
+      delete pMoving;
+      board[dstCol][dstRow] = new Queen(dstCol, dstRow, white);
+      board[dstCol][dstRow]->setLastMove(numMoves);
+   }
 }
 
 

@@ -129,6 +129,8 @@ private:
    uint8_t colRow;
    static double squareWidth;
    static double squareHeight;
+   static int windowWidth;
+   static int windowHeight;
 };
 
 
