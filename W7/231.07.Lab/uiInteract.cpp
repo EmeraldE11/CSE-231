@@ -334,4 +334,3 @@ void Interface::run(void (*callBack)(const Interface *, void *), void *p)
 
    return;
 }
-

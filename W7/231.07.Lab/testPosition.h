@@ -231,5 +231,4 @@ private:
       // teardown
       Position::metersFromPixels = metersFromPixels;
    }
-
 };

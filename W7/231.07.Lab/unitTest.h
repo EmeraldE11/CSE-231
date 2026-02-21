@@ -133,6 +133,4 @@ protected:
          tests[sFunc];
       }
    }
-   
-
 };

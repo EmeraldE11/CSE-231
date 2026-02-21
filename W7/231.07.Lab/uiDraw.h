@@ -187,4 +187,3 @@ public:
 int    random(int    min, int    max);
 double random(double min, double max);
 
-
