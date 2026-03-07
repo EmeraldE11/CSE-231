@@ -14,6 +14,7 @@
 #include "testAcceleration.h"
 #include "testSatellite.h"
 #include "testGPS.h"
+#include <iostream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -40,5 +41,7 @@ void testRunner()
    TestAcceleration().run();
    TestSatellite().run();
    TestGPS().run();
+
+   std::cout.flush();
 }
 
