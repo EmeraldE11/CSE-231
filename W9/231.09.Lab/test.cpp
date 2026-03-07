@@ -13,6 +13,7 @@
 #include "testDirection.h"
 #include "testAcceleration.h"
 #include "testSatellite.h"
+#include "testGPS.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -22,7 +23,7 @@ using namespace std;
 
 /*****************************************************************
  * testRunner
- * Runs all unit tests for Position, Velocity, Direction, Acceleration, Satellite.
+ * Runs all unit tests for Position, Velocity, Direction, Acceleration, Satellite, GPS.
  ****************************************************************/
 void testRunner()
 {
@@ -38,5 +39,6 @@ void testRunner()
    TestDirection().run();
    TestAcceleration().run();
    TestSatellite().run();
+   TestGPS().run();
 }
 

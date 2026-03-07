@@ -158,6 +158,7 @@
     <ClInclude Include="testDirection.h" />
     <ClInclude Include="testPosition.h" />
     <ClInclude Include="testSatellite.h" />
+    <ClInclude Include="testGPS.h" />
     <ClInclude Include="testVelocity.h" />
     <ClInclude Include="uiDraw.h" />
     <ClInclude Include="uiInteract.h" />

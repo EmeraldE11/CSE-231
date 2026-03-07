@@ -1,7 +1,7 @@
 /***********************************************************************
  * satellite.h
  * Simulatable base and bodies: Earth (rotate only), Satellite (gravity and motion),
- * Hubble (one concrete satellite). Physics helpers declared for use in advance().
+ * Hubble, GPS (concrete satellites). Physics helpers declared for use in advance().
  ************************************************************************/
 
 #pragma once
@@ -85,5 +85,16 @@ class Hubble : public Satellite
 {
 public:
    Hubble();
+   void draw(ogstream& gout) override;
+};
+
+/*********************************************
+ * GPS
+ * GEO satellite. draw() renders using drawGPS at position with direction angle.
+ *********************************************/
+class GPS : public Satellite
+{
+public:
+   GPS();
    void draw(ogstream& gout) override;
 };

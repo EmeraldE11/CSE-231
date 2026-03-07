@@ -1,7 +1,7 @@
 /***********************************************************************
  * Lab09.cpp
  * Orbit one satellite: constants, physics helpers, Sim/Demo, callback, main.
- * Runs unit tests then starts the simulation with Earth and Hubble.
+ * Runs unit tests then starts the simulation with Earth and GPS.
  ************************************************************************/
 
 #include <cmath>
@@ -102,6 +102,13 @@ void Hubble::draw(ogstream& gout)
    gout.drawHubble(position, direction.getRadians());
 }
 
+GPS::GPS() : Satellite(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0) {}
+
+void GPS::draw(ogstream& gout)
+{
+   gout.drawGPS(position, direction.getRadians());
+}
+
 /*********************************************
  * Sim
  * Holds the list of bodies and star state. move() advances each body; draw() draws star and bodies.
@@ -112,7 +119,7 @@ public:
    Sim(Position ptUpperRight) : ptUpperRight(ptUpperRight)
    {
       bodies.push_back(new Earth());
-      bodies.push_back(new Hubble());
+      bodies.push_back(new GPS());
       ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
       phaseStar = 0;
