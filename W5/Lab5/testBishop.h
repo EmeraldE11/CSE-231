@@ -2,13 +2,12 @@
  * Header File:
  *    TEST BISHOP
  * Author:
- *    <your name here>
+ *    Noah McCarthy
  * Summary:
  *    The unit tests for the bishop
  ************************************************************************/
 
 #pragma once
-
 
 #include "unitTest.h"
 

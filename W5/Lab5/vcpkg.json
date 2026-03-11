@@ -1,0 +1,8 @@
+{
+  "name": "chess-ui",
+  "version": "1.0.0",
+  "builtin-baseline": "d8a9c9c2e4c0fbe8f9b6c6f6d8dffb3fbb8a2b57",
+  "dependencies": [
+    "freeglut"
+  ]
+}
