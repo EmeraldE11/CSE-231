@@ -21,6 +21,7 @@ class TestGout : public ogstream
 {
 public:
    TestGout() : ogstream() {}
+   ~TestGout() { str(""); }
    void flush() override {}
    void drawEarth(const Position&, double) override { *this << "Earth"; }
    void drawHubble(const Position&, double) override { *this << "Hubble"; }
