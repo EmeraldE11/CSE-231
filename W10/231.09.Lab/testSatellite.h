@@ -270,7 +270,7 @@ private:
       const double timeStep = 1.0;
       const double tolVel = 0.5;
       const double tolPos = 2.0;
-      double expectedY = (EARTH_RADIUS + aboveSurface) + 0.0 * timeStep + 0.5 * (-GRAVITY_SEA_LEVEL) * timeStep * timeStep;
+      double expectedY = (EARTH_RADIUS + aboveSurface) + 0.0 * timeStep + 1.5 * (-GRAVITY_SEA_LEVEL) * timeStep * timeStep;
       // EXERCISE
       s.move(timeStep);
       // VERIFY
@@ -301,7 +301,7 @@ private:
       const double timeStep = 1.0;
       const double tolVel = 0.5;
       const double tolPos = 2.0;
-      double expectedY = (-EARTH_RADIUS - aboveSurface) + 0.5 * GRAVITY_SEA_LEVEL * timeStep * timeStep;
+      double expectedY = (-EARTH_RADIUS - aboveSurface) + 1.5 * GRAVITY_SEA_LEVEL * timeStep * timeStep;
       // EXERCISE
       s.move(timeStep);
       // VERIFY
@@ -332,7 +332,7 @@ private:
       const double timeStep = 1.0;
       const double tolVel = 0.5;
       const double tolPos = 2.0;
-      double expectedX = (EARTH_RADIUS + aboveSurface) + 0.0 * timeStep + 0.5 * (-GRAVITY_SEA_LEVEL) * timeStep * timeStep;
+      double expectedX = (EARTH_RADIUS + aboveSurface) + 0.0 * timeStep + 1.5 * (-GRAVITY_SEA_LEVEL) * timeStep * timeStep;
       // EXERCISE
       s.move(timeStep);
       // VERIFY
@@ -363,7 +363,7 @@ private:
       const double timeStep = 1.0;
       const double tolVel = 0.5;
       const double tolPos = 2.0;
-      double expectedX = (-EARTH_RADIUS - aboveSurface) + 0.5 * GRAVITY_SEA_LEVEL * timeStep * timeStep;
+      double expectedX = (-EARTH_RADIUS - aboveSurface) + 1.5 * GRAVITY_SEA_LEVEL * timeStep * timeStep;
       // EXERCISE
       s.move(timeStep);
       // VERIFY
