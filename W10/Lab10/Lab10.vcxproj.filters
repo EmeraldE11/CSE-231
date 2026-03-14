@@ -39,6 +39,27 @@
     <ClCompile Include="Lab10.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="crewDragon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hubble.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="satellite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sputnik.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="starlink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="acceleration.h">
@@ -86,8 +107,48 @@
     <ClInclude Include="velocity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="crewDragon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hubble.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sputnik.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="starlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testCrewDragon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testEarth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testPhysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testSputnik.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testStarlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dreamChaser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

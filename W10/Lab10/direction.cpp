@@ -7,9 +7,11 @@
 
 /*********************************************
  * setDxDy
- * Sets the direction from a unit vector (dx, dy) using atan2.
+ * Sets the direction from a unit vector (dx, dy) using atan2
+ * and normalizes the resulting angle.
  *********************************************/
 void Direction::setDxDy(double dx, double dy)
 {
-   radians = atan2(dy, dx);
+   double r = atan2(dy, dx);
+   setRadians(r);
 }
