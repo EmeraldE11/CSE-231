@@ -10,6 +10,11 @@
 #include "uiDraw.h"
 #include "position.h"
 #include "satellite.h"
+#include "sputnik.h"
+#include "gps.h"
+#include "hubble.h"
+#include "crewDragon.h"
+#include "starlink.h"
 #include "test.h"
 
 using namespace std;
@@ -28,6 +33,8 @@ const double EARTH_RADIUS = 6378000.0;
 const double GRAVITY_SEA_LEVEL = 9.80665;
 const double GEO_DISTANCE = 42164000.0;
 const double GEO_VELOCITY = 3100.0;
+const double GPS_DISTANCE = 26560000.0;
+const double GPS_VELOCITY = 3880.0;
 const double KICK_VELOCITY = 2000.0;
 const double TIME_PER_FRAME = TIME_DILATION / FRAME_RATE;
 const double ROTATION_PER_FRAME = -(2.0 * M_PI / FRAME_RATE) * (TIME_DILATION / SECONDS_PER_DAY);
@@ -56,90 +63,10 @@ void updatePosition(Position& pos, const Velocity& v, const Acceleration& a, dou
    pos.addMetersY(v.getDy() * time + 0.5 * a.getDDy() * time * time);
 }
 
-Earth::Earth()
-{
-   position.setMeters(0.0, 0.0);
-   angle.setRadians(0.0);
-}
-
-void Earth::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)
-{
-   (void)timePerFrame;
-   (void)earthRadius;
-   (void)gravitySeaLevel;
-   angle.rotate(ROTATION_PER_FRAME);
-}
-
-void Earth::draw(ogstream& gout)
-{
-   gout.drawEarth(position, angle.getRadians());
-}
-
-Satellite::Satellite() : angularVelocity(0.02), radius(10.0), dead(false), age(0) {}
-
-Satellite::Satellite(double x, double y, double vx, double vy)
-   : angularVelocity(0.02), radius(10.0), dead(false), age(0)
-{
-   position.setMeters(x, y);
-   velocity.setDx(vx);
-   velocity.setDy(vy);
-   direction.setDxDy(vx, vy);
-}
-
-Satellite::Satellite(const Satellite& parent, const Direction& kickDirection)
-   : angularVelocity(0.0), radius(0.0), dead(false), age(0)
-{
-   position = parent.getPosition();
-   velocity.setDx(kickDirection.getDx() * KICK_VELOCITY);
-   velocity.setDy(kickDirection.getDy() * KICK_VELOCITY);
-   direction = kickDirection;
-}
-
-void Satellite::move(double time)
-{
-   advance(time, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
-}
-
-void Satellite::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)
-{
-   if (dead) return;
-   double distance = sqrt(position.getMetersX() * position.getMetersX() +
-                          position.getMetersY() * position.getMetersY());
-   if (distance <= earthRadius) return;
-
-   Acceleration aGravity = getGravity(position, earthRadius, gravitySeaLevel);
-   updateVelocity(velocity, aGravity, timePerFrame);
-   updatePosition(position, velocity, aGravity, timePerFrame);
-   direction.rotate(angularVelocity);
-   age++;
-}
-
-Hubble::Hubble() : Satellite(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0) {}
-
-void Hubble::draw(ogstream& gout)
-{
-   gout.drawHubble(position, direction.getRadians());
-}
-
-GPS::GPS() : Satellite(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0) {}
-
-void GPS::draw(ogstream& gout)
-{
-   gout.drawGPS(position, direction.getRadians());
-}
-
-Projectile::Projectile(const Satellite& parent, const Position& offset, const Velocity& kick)
-   : Satellite(parent.getPosition().getMetersX() + offset.getMetersX(),
-               parent.getPosition().getMetersY() + offset.getMetersY(),
-               kick.getDx(), kick.getDy())
-{
-   radius = 1.0 * position.getZoom();
-}
-
-void Projectile::draw(ogstream& gout)
-{
-   gout.drawProjectile(position);
-}
+const double GPS_ORBIT_X = 23001634.72;
+const double GPS_ORBIT_Y = 13280000.0;
+const double GPS_ORBIT_VX = 1940.0;
+const double GPS_ORBIT_VY = 3360.18;
 
 /*********************************************
  * Sim
@@ -151,7 +78,16 @@ public:
    Sim(Position ptUpperRight) : ptUpperRight(ptUpperRight)
    {
       bodies.push_back(new Earth());
-      bodies.push_back(new GPS());
+      bodies.push_back(new Sputnik());
+      bodies.push_back(new GPS(0.0, GPS_DISTANCE, -GPS_VELOCITY, 0.0));
+      bodies.push_back(new GPS(GPS_ORBIT_X, GPS_ORBIT_Y, -GPS_ORBIT_VX, GPS_ORBIT_VY));
+      bodies.push_back(new GPS(GPS_ORBIT_X, -GPS_ORBIT_Y, GPS_ORBIT_VX, GPS_ORBIT_VY));
+      bodies.push_back(new GPS(0.0, -GPS_DISTANCE, GPS_VELOCITY, 0.0));
+      bodies.push_back(new GPS(-GPS_ORBIT_X, -GPS_ORBIT_Y, GPS_ORBIT_VX, -GPS_ORBIT_VY));
+      bodies.push_back(new GPS(-GPS_ORBIT_X, GPS_ORBIT_Y, -GPS_ORBIT_VX, -GPS_ORBIT_VY));
+      bodies.push_back(new Hubble());
+      bodies.push_back(new CrewDragon());
+      bodies.push_back(new Starlink());
       ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
       phaseStar = 0;

@@ -20,6 +20,9 @@ extern const double EARTH_RADIUS;
 extern const double GRAVITY_SEA_LEVEL;
 extern const double GEO_DISTANCE;
 extern const double GEO_VELOCITY;
+extern const double GPS_DISTANCE;
+extern const double GPS_VELOCITY;
+extern const double KICK_VELOCITY;
 extern const double TIME_PER_FRAME;
 extern const double ROTATION_PER_FRAME;
 
@@ -94,28 +97,6 @@ protected:
    double radius;
    bool dead;
    int age;
-};
-
-/*********************************************
- * Hubble
- * GEO satellite. draw() renders using drawHubble at position with direction angle.
- *********************************************/
-class Hubble : public Satellite
-{
-public:
-   Hubble();
-   void draw(ogstream& gout) override;
-};
-
-/*********************************************
- * GPS
- * GEO satellite. draw() renders using drawGPS at position with direction angle.
- *********************************************/
-class GPS : public Satellite
-{
-public:
-   GPS();
-   void draw(ogstream& gout) override;
 };
 
 /*********************************************

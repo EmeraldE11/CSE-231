@@ -141,8 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Lab09.cpp" />
     <ClCompile Include="acceleration.cpp" />
+    <ClCompile Include="crewDragon.cpp" />
     <ClCompile Include="direction.cpp" />
+    <ClCompile Include="gps.cpp" />
+    <ClCompile Include="hubble.cpp" />
     <ClCompile Include="position.cpp" />
+    <ClCompile Include="satellite.cpp" />
+    <ClCompile Include="sputnik.cpp" />
+    <ClCompile Include="starlink.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="uiDraw.cpp" />
     <ClCompile Include="uiInteract.cpp" />
@@ -150,9 +156,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="acceleration.h" />
+    <ClInclude Include="crewDragon.h" />
     <ClInclude Include="direction.h" />
+    <ClInclude Include="gps.h" />
+    <ClInclude Include="hubble.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="satellite.h" />
+    <ClInclude Include="sputnik.h" />
+    <ClInclude Include="starlink.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="testAcceleration.h" />
     <ClInclude Include="testDirection.h" />

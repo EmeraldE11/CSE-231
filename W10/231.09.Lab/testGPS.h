@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "satellite.h"
+#include "gps.h"
 #include "unitTest.h"
 
 class TestGPS : public UnitTest
@@ -28,8 +28,8 @@ private:
       GPS g;
       // VERIFY
       assertEquals(g.getPosition().getMetersX(), 0.0);
-      assertEquals(g.getPosition().getMetersY(), GEO_DISTANCE);
-      assertEquals(g.getRadius(), 10.0);
+      assertEquals(g.getPosition().getMetersY(), GPS_DISTANCE);
+      assertEquals(g.getRadius(), 12.0);
       assertUnit(!g.isDead());
       // TEARDOWN
       // (none)

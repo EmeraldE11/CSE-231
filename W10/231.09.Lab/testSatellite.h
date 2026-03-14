@@ -7,6 +7,7 @@
 #pragma once
 
 #include "satellite.h"
+#include "hubble.h"
 #include "unitTest.h"
 #include <cmath>
 
@@ -74,7 +75,7 @@ private:
       Hubble h;
       // VERIFY
       assertEquals(h.getPosition().getMetersX(), 0.0);
-      assertEquals(h.getPosition().getMetersY(), GEO_DISTANCE);
+      assertEquals(h.getPosition().getMetersY(), -GEO_DISTANCE);
       assertEquals(h.getRadius(), 10.0);
       assertUnit(!h.isDead());
       // TEARDOWN
