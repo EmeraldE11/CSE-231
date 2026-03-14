@@ -84,8 +84,8 @@ void Ship::input(const Interface* pUI, std::vector<Simulatable*>& satellites)
    if (pUI && pUI->isSpace())
    {
       Position offset = position;
-      offset.setMetersX(offset.getMetersX() + radius * std::sin(angle));
-      offset.setMetersY(offset.getMetersY() + radius * std::cos(angle));
+      offset.setMetersX(radius * std::sin(angle));
+      offset.setMetersY(radius * std::cos(angle));
       Velocity kick;
       kick.setDx(velocity.getDx() + KICK_VELOCITY * std::sin(angle));
       kick.setDy(velocity.getDy() + KICK_VELOCITY * std::cos(angle));
