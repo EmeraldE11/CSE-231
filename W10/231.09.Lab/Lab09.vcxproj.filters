@@ -80,6 +80,24 @@
     <ClInclude Include="testGPS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="testPhysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testEarth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testSputnik.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testCrewDragon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testStarlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="uiDraw.h">
       <Filter>Header Files</Filter>
     </ClInclude>

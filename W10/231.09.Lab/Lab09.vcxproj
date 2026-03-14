@@ -157,13 +157,19 @@
   <ItemGroup>
     <ClInclude Include="acceleration.h" />
     <ClInclude Include="crewDragon.h" />
+    <ClInclude Include="testCrewDragon.h" />
+    <ClInclude Include="testEarth.h" />
     <ClInclude Include="direction.h" />
     <ClInclude Include="gps.h" />
     <ClInclude Include="hubble.h" />
+    <ClInclude Include="testPhysics.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="satellite.h" />
     <ClInclude Include="sputnik.h" />
     <ClInclude Include="starlink.h" />
+    <ClInclude Include="testSputnik.h" />
+    <ClInclude Include="testStarlink.h" />
+    <ClInclude Include="testDraw.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="testAcceleration.h" />
     <ClInclude Include="testDirection.h" />

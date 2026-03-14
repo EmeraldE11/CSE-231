@@ -33,6 +33,8 @@ Acceleration getGravity(const Position& pos, double earthRadius, double gravityS
 void updateVelocity(Velocity& v, const Acceleration& a, double time);
 void updatePosition(Position& pos, const Velocity& v, const Acceleration& a, double time);
 
+class TestEarth;
+
 /*********************************************
  * Simulatable
  * Abstract base for simulation bodies. advance() updates state; draw() renders.
@@ -40,6 +42,7 @@ void updatePosition(Position& pos, const Velocity& v, const Acceleration& a, dou
 class Simulatable
 {
 public:
+   friend class TestEarth;
    virtual ~Simulatable() {}
    virtual void advance(double timePerFrame, double earthRadius, double gravitySeaLevel) = 0;
    virtual void draw(ogstream& gout) = 0;
@@ -54,6 +57,7 @@ protected:
 class Earth : public Simulatable
 {
 public:
+   friend class TestEarth;
    Earth();
    void advance(double timePerFrame, double earthRadius, double gravitySeaLevel) override;
    void draw(ogstream& gout) override;
