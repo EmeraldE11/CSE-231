@@ -20,6 +20,7 @@
 #include "testCrewDragon.h"
 #include "testStarlink.h"
 #include "testDraw.h"
+#include "testShip.h"
 #include <iostream>
 
 #ifdef _WIN32
@@ -53,6 +54,7 @@ void testRunner()
    TestCrewDragon().run();
    TestStarlink().run();
    TestDraw().run();
+   TestShip().run();
 
    std::cout.flush();
 }
