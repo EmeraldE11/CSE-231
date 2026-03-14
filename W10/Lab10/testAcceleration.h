@@ -1,6 +1,7 @@
 /***********************************************************************
  * testAcceleration.h
- * Unit tests for Acceleration: constructors, assign, getDDx/getDDy, getVelocity(time).
+ * Unit tests for Acceleration.
+ * Each test follows SETUP / EXERCISE / VERIFY / TEARDOWN.
  ************************************************************************/
 
 #pragma once
@@ -13,50 +14,80 @@ class TestAcceleration : public UnitTest
 public:
    void run()
    {
-      construct_default();
-      construct_components();
-      assign();
-      getDDx_getDDy();
-      getVelocity();
+      constructor_default_zero();
+      constructor_components_nonZero();
+      assign_copyFromOther();
+      getDDxDDy_returnsComponents();
+      getVelocity_scalesByTime();
       report("Acceleration");
    }
 
 private:
-   void construct_default()
+   void constructor_default_zero()
    {
+      // SETUP
+      // (none)
+      // EXERCISE
       Acceleration a;
+      // VERIFY
       assertEquals(a.getDDx(), 0.0);
       assertEquals(a.getDDy(), 0.0);
+      // TEARDOWN
+      // (none)
    }
 
-   void construct_components()
+   void constructor_components_nonZero()
    {
+      // SETUP
+      // (none)
+      // EXERCISE
       Acceleration a(2.0, 3.0);
+      // VERIFY
       assertEquals(a.getDDx(), 2.0);
       assertEquals(a.getDDy(), 3.0);
+      // TEARDOWN
+      // (none)
    }
 
-   void assign()
+   void assign_copyFromOther()
    {
-      Acceleration x(1.0, 2.0);
-      Acceleration y;
-      y.assign(x);
-      assertEquals(y.getDDx(), 1.0);
-      assertEquals(y.getDDy(), 2.0);
+      // SETUP
+      Acceleration source(1.0, 2.0);
+      Acceleration target;
+      // EXERCISE
+      target.assign(source);
+      // VERIFY
+      assertEquals(target.getDDx(), 1.0);
+      assertEquals(target.getDDy(), 2.0);
+      // TEARDOWN
+      // (none)
    }
 
-   void getDDx_getDDy()
+   void getDDxDDy_returnsComponents()
    {
+      // SETUP
       Acceleration a(5.0, -4.0);
-      assertEquals(a.getDDx(), 5.0);
-      assertEquals(a.getDDy(), -4.0);
+      // EXERCISE
+      double ddx = a.getDDx();
+      double ddy = a.getDDy();
+      // VERIFY
+      assertEquals(ddx, 5.0);
+      assertEquals(ddy, -4.0);
+      // TEARDOWN
+      // (none)
    }
 
-   void getVelocity()
+   void getVelocity_scalesByTime()
    {
+      // SETUP
       Acceleration a(10.0, 20.0);
+      // EXERCISE
       Velocity v = a.getVelocity(0.5);
+      // VERIFY
       assertEquals(v.getDx(), 5.0);
       assertEquals(v.getDy(), 10.0);
+      // TEARDOWN
+      // (none)
    }
 };
+

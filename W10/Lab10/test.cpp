@@ -12,8 +12,15 @@
 #include "testVelocity.h"
 #include "testDirection.h"
 #include "testAcceleration.h"
+#include "testPhysics.h"
+#include "testEarth.h"
 #include "testSatellite.h"
 #include "testGPS.h"
+#include "testSputnik.h"
+#include "testCrewDragon.h"
+#include "testStarlink.h"
+#include "testDraw.h"
+#include "testShip.h"
 #include <iostream>
 
 #ifdef _WIN32
@@ -39,8 +46,15 @@ void testRunner()
    TestVelocity().run();
    TestDirection().run();
    TestAcceleration().run();
+   TestPhysics().run();
+   TestEarth().run();
    TestSatellite().run();
    TestGPS().run();
+   TestSputnik().run();
+   TestCrewDragon().run();
+   TestStarlink().run();
+   TestDraw().run();
+   TestShip().run();
 
    std::cout.flush();
 }
