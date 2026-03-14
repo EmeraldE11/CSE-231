@@ -25,9 +25,10 @@ using namespace std;
 
 const double HOURS_PER_DAY = 24.0;
 const double MINUTES_PER_HOUR = 60.0;
-const double TIME_DILATION = HOURS_PER_DAY * MINUTES_PER_HOUR;
 const double FRAME_RATE = 30.0;
 const double SECONDS_PER_DAY = 86400.0;
+const double SIM_SECONDS_PER_FRAME = 10.0;
+const double TIME_DILATION = HOURS_PER_DAY * MINUTES_PER_HOUR;
 
 const double EARTH_RADIUS = 6378000.0;
 const double GRAVITY_SEA_LEVEL = 9.80665;
@@ -36,8 +37,8 @@ const double GEO_VELOCITY = 3100.0;
 const double GPS_DISTANCE = 26560000.0;
 const double GPS_VELOCITY = 3880.0;
 const double KICK_VELOCITY = 2000.0;
-const double TIME_PER_FRAME = TIME_DILATION / FRAME_RATE;
-const double ROTATION_PER_FRAME = -(2.0 * M_PI / FRAME_RATE) * (TIME_DILATION / SECONDS_PER_DAY);
+const double TIME_PER_FRAME = SIM_SECONDS_PER_FRAME;
+const double ROTATION_PER_FRAME = -(2.0 * M_PI * SIM_SECONDS_PER_FRAME / SECONDS_PER_DAY);
 
 Acceleration getGravity(const Position& pos, double earthRadius, double gravitySeaLevel)
 {

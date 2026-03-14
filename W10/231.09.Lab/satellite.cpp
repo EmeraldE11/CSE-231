@@ -57,9 +57,13 @@ void Satellite::advance(double timePerFrame, double earthRadius, double gravityS
                           position.getMetersY() * position.getMetersY());
    if (distance <= earthRadius) return;
 
-   Acceleration aGravity = getGravity(position, earthRadius, gravitySeaLevel);
-   updateVelocity(velocity, aGravity, timePerFrame);
-   updatePosition(position, velocity, aGravity, timePerFrame);
+   double dt = timePerFrame;
+   Acceleration a = getGravity(position, earthRadius, gravitySeaLevel);
+   velocity.add(a.getVelocity(dt * 0.5));
+   position.addMetersX(velocity.getDx() * dt);
+   position.addMetersY(velocity.getDy() * dt);
+   Acceleration aNew = getGravity(position, earthRadius, gravitySeaLevel);
+   velocity.add(aNew.getVelocity(dt * 0.5));
    direction.rotate(angularVelocity);
    age++;
 }
