@@ -182,6 +182,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
