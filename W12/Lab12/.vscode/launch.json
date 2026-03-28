@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/monkies989/Documents/_BYU-I/_Winter 2026/Inheritence Design/CSE-231/W12/Lab12",
+      "program": "/Users/monkies989/Documents/_BYU-I/_Winter 2026/Inheritence Design/CSE-231/W12/Lab12/build/Debug/outDebug"
+    }
+  ]
+}
