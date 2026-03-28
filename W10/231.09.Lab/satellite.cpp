@@ -4,6 +4,7 @@
  ************************************************************************/
 
 #include "satellite.h"
+#include "part.h"
 #include <cmath>
 
 Earth::Earth()
@@ -50,6 +51,20 @@ void Satellite::move(double time)
    advance(time, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
 }
 
+void Satellite::destroy(std::vector<Simulatable*>& satellites)
+{
+   if (dead) return;
+   const int n = 3;
+   for (int i = 0; i < n; i++)
+   {
+      double angle = direction.getRadians() + (2.0 * M_PI * i / n);
+      Direction kick;
+      kick.setRadians(angle);
+      satellites.push_back(new Part(*this, kick));
+   }
+   kill();
+}
+
 void Satellite::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)
 {
    if (dead) return;
@@ -73,7 +88,7 @@ Projectile::Projectile(const Satellite& parent, const Position& offset, const Ve
               parent.getPosition().getMetersY() + offset.getMetersY(),
               kick.getDx(), kick.getDy())
 {
-   radius = 1.0 * position.getZoom();
+   radius = 1.0;
 }
 
 void Projectile::draw(ogstream& gout)

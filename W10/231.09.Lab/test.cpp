@@ -19,6 +19,7 @@
 #include "testSputnik.h"
 #include "testCrewDragon.h"
 #include "testStarlink.h"
+#include "testCollision.h"
 #include "testDraw.h"
 #include <iostream>
 
@@ -52,6 +53,7 @@ void testRunner()
    TestSputnik().run();
    TestCrewDragon().run();
    TestStarlink().run();
+   TestCollision().run();
    TestDraw().run();
 
    std::cout.flush();

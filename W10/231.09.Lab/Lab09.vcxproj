@@ -141,12 +141,17 @@
   <ItemGroup>
     <ClCompile Include="Lab09.cpp" />
     <ClCompile Include="acceleration.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="crewDragon.cpp" />
     <ClCompile Include="direction.cpp" />
+    <ClCompile Include="fragment.cpp" />
     <ClCompile Include="gps.cpp" />
     <ClCompile Include="hubble.cpp" />
+    <ClCompile Include="part.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="satellite.cpp" />
+    <ClCompile Include="ship.cpp" />
     <ClCompile Include="sputnik.cpp" />
     <ClCompile Include="starlink.cpp" />
     <ClCompile Include="test.cpp" />
@@ -156,13 +161,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="acceleration.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="crewDragon.h" />
     <ClInclude Include="testCrewDragon.h" />
     <ClInclude Include="testEarth.h" />
     <ClInclude Include="direction.h" />
+    <ClInclude Include="fragment.h" />
     <ClInclude Include="gps.h" />
     <ClInclude Include="hubble.h" />
     <ClInclude Include="testPhysics.h" />
+    <ClInclude Include="part.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="satellite.h" />
     <ClInclude Include="sputnik.h" />
@@ -172,9 +181,11 @@
     <ClInclude Include="testDraw.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="testAcceleration.h" />
+    <ClInclude Include="testCollision.h" />
     <ClInclude Include="testDirection.h" />
     <ClInclude Include="testPosition.h" />
     <ClInclude Include="testSatellite.h" />
+    <ClInclude Include="ship.h" />
     <ClInclude Include="testGPS.h" />
     <ClInclude Include="testVelocity.h" />
     <ClInclude Include="uiDraw.h" />

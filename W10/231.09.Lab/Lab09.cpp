@@ -17,6 +17,7 @@
 #include "starlink.h"
 #include "test.h"
 #include "ship.h"
+#include "collision.h"
 
 using namespace std;
 
@@ -38,8 +39,10 @@ const double GEO_VELOCITY = 3100.0;
 const double GPS_DISTANCE = 26560000.0;
 const double GPS_VELOCITY = 3880.0;
 const double KICK_VELOCITY = 2000.0;
+const double BULLET_RELATIVE_SPEED = 12000.0;
 const double TIME_PER_FRAME = SIM_SECONDS_PER_FRAME;
 const double ROTATION_PER_FRAME = -(2.0 * M_PI * SIM_SECONDS_PER_FRAME / SECONDS_PER_DAY);
+const int SHORT_LIVED_LIFETIME_FRAMES = 100;
 
 Acceleration getGravity(const Position& pos, double earthRadius, double gravitySeaLevel)
 {
@@ -129,6 +132,43 @@ void Sim::move()
 {
    for (Simulatable* body : bodies)
       body->advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
+
+   for (size_t i = 0; i < bodies.size(); ++i)
+   {
+      Satellite* s = dynamic_cast<Satellite*>(bodies[i]);
+      if (!s || s->isDead() || dynamic_cast<Earth*>(bodies[i])) continue;
+      if (collideEarth(*s, EARTH_RADIUS))
+         s->destroy(bodies);
+   }
+
+   for (size_t i = 0; i < bodies.size(); ++i)
+   {
+      for (size_t j = i + 1; j < bodies.size(); ++j)
+      {
+         Satellite* a = dynamic_cast<Satellite*>(bodies[i]);
+         Satellite* b = dynamic_cast<Satellite*>(bodies[j]);
+         if (!a || !b || a->isDead() || b->isDead()) continue;
+         if (dynamic_cast<Earth*>(bodies[i]) || dynamic_cast<Earth*>(bodies[j])) continue;
+         if (collide(*a, *b))
+            resolveCollision(a, b, bodies);
+      }
+   }
+
+   auto it = bodies.begin();
+   while (it != bodies.end())
+   {
+      Satellite* s = dynamic_cast<Satellite*>(*it);
+      if (s && s->isDead())
+      {
+         if (s == pShip)
+            pShip = nullptr;
+         delete s;
+         it = bodies.erase(it);
+      }
+      else
+         ++it;
+   }
+
    phaseStar++;
 }
 

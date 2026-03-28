@@ -24,6 +24,10 @@
 		DE0BCB422F65B37E00B06F8C /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0BCB412F65B37E00B06F8C /* GLUT.framework */; };
 		DE0BCB442F65B39900B06F8C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE0BCB432F65B39900B06F8C /* OpenGL.framework */; };
 		DE0BCB472F65B43C00B06F8C /* ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE0BCB462F65B43C00B06F8C /* ship.cpp */; };
+		DE0BCB492F65E10000B06F8C /* collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE0BCB4A2F65E10000B06F8C /* collision.cpp */; };
+		DE0BCB4B2F65E10000B06F8C /* part.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE0BCB4C2F65E10000B06F8C /* part.cpp */; };
+		DE0BCB4D2F65E10000B06F8C /* fragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE0BCB4E2F65E10000B06F8C /* fragment.cpp */; };
+		DE0BCB4F2F65E10000B06F8C /* bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE0BCB502F65E10000B06F8C /* bullet.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +87,15 @@
 		DE0BCB432F65B39900B06F8C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		DE0BCB452F65B43C00B06F8C /* ship.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ship.h; sourceTree = "<group>"; };
 		DE0BCB462F65B43C00B06F8C /* ship.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ship.cpp; sourceTree = "<group>"; };
+		DE0BCB512F65E10000B06F8C /* bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bullet.h; sourceTree = "<group>"; };
+		DE0BCB502F65E10000B06F8C /* bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bullet.cpp; sourceTree = "<group>"; };
+		DE0BCB532F65E10000B06F8C /* collision.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = collision.h; sourceTree = "<group>"; };
+		DE0BCB4A2F65E10000B06F8C /* collision.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = collision.cpp; sourceTree = "<group>"; };
+		DE0BCB542F65E10000B06F8C /* fragment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fragment.h; sourceTree = "<group>"; };
+		DE0BCB4E2F65E10000B06F8C /* fragment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fragment.cpp; sourceTree = "<group>"; };
+		DE0BCB552F65E10000B06F8C /* part.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = part.h; sourceTree = "<group>"; };
+		DE0BCB4C2F65E10000B06F8C /* part.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = part.cpp; sourceTree = "<group>"; };
+		DE0BCB562F65E10000B06F8C /* testCollision.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testCollision.h; sourceTree = "<group>"; };
 		DE0BCB482F65D4FA00B06F8C /* Lab10 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lab10; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -108,6 +121,15 @@
 				DE0BCB0D2F65AD3C00B06F8C /* crewDragon.cpp */,
 				DE0BCB452F65B43C00B06F8C /* ship.h */,
 				DE0BCB462F65B43C00B06F8C /* ship.cpp */,
+				DE0BCB532F65E10000B06F8C /* collision.h */,
+				DE0BCB4A2F65E10000B06F8C /* collision.cpp */,
+				DE0BCB552F65E10000B06F8C /* part.h */,
+				DE0BCB4C2F65E10000B06F8C /* part.cpp */,
+				DE0BCB542F65E10000B06F8C /* fragment.h */,
+				DE0BCB4E2F65E10000B06F8C /* fragment.cpp */,
+				DE0BCB512F65E10000B06F8C /* bullet.h */,
+				DE0BCB502F65E10000B06F8C /* bullet.cpp */,
+				DE0BCB562F65E10000B06F8C /* testCollision.h */,
 				DE0BCB0E2F65AD3C00B06F8C /* direction.h */,
 				DE0BCB0F2F65AD3C00B06F8C /* direction.cpp */,
 				DE0BCB102F65AD3C00B06F8C /* gps.h */,
@@ -233,6 +255,10 @@
 				DE0BCB3D2F65AD3C00B06F8C /* Lab09.cpp in Sources */,
 				DE0BCB3E2F65AD3C00B06F8C /* sputnik.cpp in Sources */,
 				DE0BCB3F2F65AD3C00B06F8C /* uiInteract.cpp in Sources */,
+				DE0BCB492F65E10000B06F8C /* collision.cpp in Sources */,
+				DE0BCB4B2F65E10000B06F8C /* part.cpp in Sources */,
+				DE0BCB4D2F65E10000B06F8C /* fragment.cpp in Sources */,
+				DE0BCB4F2F65E10000B06F8C /* bullet.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

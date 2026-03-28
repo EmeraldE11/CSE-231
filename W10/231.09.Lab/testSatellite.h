@@ -8,6 +8,7 @@
 
 #include "satellite.h"
 #include "hubble.h"
+#include "part.h"
 #include "unitTest.h"
 #include <cmath>
 
@@ -47,7 +48,7 @@ public:
       constructor_stationaryEast();
       constructor_stationaryWest();
       constructor_projectileFromParent();
-      destroy_noOp();
+      destroy_spawnsThreeParts();
       input_noOp();
       report("Satellite");
    }
@@ -490,19 +491,18 @@ private:
       // (none)
    }
 
-   // destroy() stub: call with list; no crash, list unchanged.
-   void destroy_noOp()
+   void destroy_spawnsThreeParts()
    {
-      // SETUP
       Hubble h;
       std::vector<Simulatable*> satellites;
-      // EXERCISE
       h.destroy(satellites);
-      // VERIFY
-      assertUnit(satellites.empty());
-      assertUnit(!h.isDead());
-      // TEARDOWN
-      // (none)
+      assertUnit(h.isDead());
+      assertEquals((int)satellites.size(), 3);
+      for (Simulatable* p : satellites)
+      {
+         assertUnit(dynamic_cast<Part*>(p) != nullptr);
+         delete p;
+      }
    }
 
    // input() stub: call with nullptr and list; no crash, list unchanged.
