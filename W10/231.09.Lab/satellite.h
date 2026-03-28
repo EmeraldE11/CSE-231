@@ -23,10 +23,8 @@ extern const double GEO_VELOCITY;
 extern const double GPS_DISTANCE;
 extern const double GPS_VELOCITY;
 extern const double KICK_VELOCITY;
-extern const double BULLET_RELATIVE_SPEED;
 extern const double TIME_PER_FRAME;
 extern const double ROTATION_PER_FRAME;
-extern const int SHORT_LIVED_LIFETIME_FRAMES;
 
 // Angle is an orientation type used for rotation; implemented with Direction.
 typedef Direction Angle;
@@ -85,7 +83,7 @@ public:
    Satellite(const Satellite& parent, const Direction& kickDirection);
    void advance(double timePerFrame, double earthRadius, double gravitySeaLevel) override;
    virtual void move(double time);
-   virtual void destroy(std::vector<Simulatable*>& satellites);
+   virtual void destroy(std::vector<Simulatable*>& satellites) {}
    virtual void input(const Interface* pUI, std::vector<Simulatable*>& satellites) {}
    virtual void draw(ogstream& gout) override = 0;
 

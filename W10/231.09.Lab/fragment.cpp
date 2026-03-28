@@ -17,16 +17,3 @@ void Fragment::draw(ogstream& gout)
 {
    gout.drawFragment(position, direction.getRadians());
 }
-
-void Fragment::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)
-{
-   Satellite::advance(timePerFrame, earthRadius, gravitySeaLevel);
-   if (age >= SHORT_LIVED_LIFETIME_FRAMES)
-      kill();
-}
-
-void Fragment::destroy(std::vector<Simulatable*>& satellites)
-{
-   (void)satellites;
-   kill();
-}

@@ -15,6 +15,18 @@
 #include <cmath>
 #include <string>
 
+// Same pattern as TestGout in testDraw.h: ogstream::~ogstream calls flush(), which uses
+// GLUT; clear the buffer in the derived destructor and override flush() so unit tests
+// run without glutInit.
+class TestGoutPart : public ogstream
+{
+public:
+   TestGoutPart() : ogstream() {}
+   ~TestGoutPart() { str(""); }
+   void flush() override {}
+   void drawProjectile(const Position&) override { *this << "Projectile"; }
+};
+
 class TestPart : public UnitTest
 {
 public:
@@ -120,8 +132,7 @@ private:
       off.setMeters(10.0, 0.0);
       Velocity kick(500.0, 100.0);
       Part part(parent, off, kick);
-      Position pt;
-      ogstreamFake gout(pt);
+      TestGoutPart gout;
       // EXERCISE
       part.draw(gout);
       // VERIFY

@@ -16,8 +16,6 @@
 #include "crewDragon.h"
 #include "starlink.h"
 #include "test.h"
-#include "ship.h"
-#include "collision.h"
 
 using namespace std;
 
@@ -39,10 +37,8 @@ const double GEO_VELOCITY = 3100.0;
 const double GPS_DISTANCE = 26560000.0;
 const double GPS_VELOCITY = 3880.0;
 const double KICK_VELOCITY = 2000.0;
-const double BULLET_RELATIVE_SPEED = 12000.0;
 const double TIME_PER_FRAME = SIM_SECONDS_PER_FRAME;
 const double ROTATION_PER_FRAME = -(2.0 * M_PI * SIM_SECONDS_PER_FRAME / SECONDS_PER_DAY);
-const int SHORT_LIVED_LIFETIME_FRAMES = 100;
 
 Acceleration getGravity(const Position& pos, double earthRadius, double gravitySeaLevel)
 {
@@ -73,9 +69,6 @@ const double GPS_ORBIT_Y = 13280000.0;
 const double GPS_ORBIT_VX = 1940.0;
 const double GPS_ORBIT_VY = 3360.18;
 
-// Background twinkle stars (original single star + 50 more).
-static const int NUM_BACKGROUND_STARS = 51;
-
 /*********************************************
  * Sim
  * Holds the list of bodies and star state. move() advances each body; draw() draws star and bodies.
@@ -96,17 +89,8 @@ public:
       bodies.push_back(new Hubble());
       bodies.push_back(new CrewDragon());
       bodies.push_back(new Starlink());
-      
-      // Create the ship
-      pShip = new Ship();
-      bodies.push_back(pShip);
-
-      starPositions.resize(NUM_BACKGROUND_STARS);
-      for (int i = 0; i < NUM_BACKGROUND_STARS; i++)
-      {
-         starPositions[i].setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-         starPositions[i].setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-      }
+      ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
+      ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
       phaseStar = 0;
    }
 
@@ -116,24 +100,15 @@ public:
          delete p;
    }
 
-   void input(const Interface* pUI);
+   void input(const Interface* pUI) { (void)pUI; }
    void move();
    void draw();
 
    std::vector<Simulatable*> bodies;
-   std::vector<Position> starPositions;
+   Position ptStar;
    Position ptUpperRight;
    unsigned char phaseStar;
-   
-private:
-   Ship* pShip{nullptr};
 };
-
-void Sim::input(const Interface* pUI)
-{
-   if (pShip)
-      pShip->input(pUI, bodies);
-}
 
 void Sim::move()
 {
@@ -168,13 +143,14 @@ void Sim::draw()
 {
    Position pt;
    ogstream gout(pt);
-   for (size_t i = 0; i < starPositions.size(); i++)
-   {
-      unsigned char ph = static_cast<unsigned char>(phaseStar + static_cast<int>(i) * 17);
-      gout.drawStar(starPositions[i], ph);
-   }
+   gout.drawStar(ptStar, phaseStar);
    for (Simulatable* body : bodies)
+   {
+      Satellite* s = dynamic_cast<Satellite*>(body);
+      if (s && s->isDead())
+         continue;
       body->draw(gout);
+   }
 }
 
 void callBack(const Interface* pUI, void* p)
