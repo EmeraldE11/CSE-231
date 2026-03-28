@@ -4,6 +4,12 @@
  ************************************************************************/
 
 #include "sputnik.h"
+#include "partTypes.h"
+
+Part* Sputnik::createPart(const Position& offset, const Velocity& kick)
+{
+   return new SputnikPart(*this, offset, kick);
+}
 
 Sputnik::Sputnik() : Satellite(-36515095.13, 21082000.0, 2050.0, 2684.68)
 {

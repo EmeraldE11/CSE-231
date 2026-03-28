@@ -45,6 +45,9 @@
     <ClCompile Include="part.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="partTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="fragment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="part.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="partTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fragment.h">

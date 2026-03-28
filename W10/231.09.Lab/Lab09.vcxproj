@@ -148,6 +148,7 @@
     <ClCompile Include="position.cpp" />
     <ClCompile Include="satellite.cpp" />
     <ClCompile Include="part.cpp" />
+    <ClCompile Include="partTypes.cpp" />
     <ClCompile Include="fragment.cpp" />
     <ClCompile Include="sputnik.cpp" />
     <ClCompile Include="starlink.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="position.h" />
     <ClInclude Include="satellite.h" />
     <ClInclude Include="part.h" />
+    <ClInclude Include="partTypes.h" />
     <ClInclude Include="fragment.h" />
     <ClInclude Include="testPart.h" />
     <ClInclude Include="testFragment.h" />

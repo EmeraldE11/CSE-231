@@ -34,6 +34,7 @@ void updateVelocity(Velocity& v, const Acceleration& a, double time);
 void updatePosition(Position& pos, const Velocity& v, const Acceleration& a, double time);
 
 class TestEarth;
+class Part;
 
 /*********************************************
  * Simulatable
@@ -95,6 +96,7 @@ public:
    void kill() { dead = true; }
 
 protected:
+   virtual Part* createPart(const Position& offset, const Velocity& kick);
    void spawnPart(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick);
    void spawnFragment(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick);
    void spawnDebrisOnCollision(std::vector<Simulatable*>& out, int numParts, int numFragments);
@@ -105,6 +107,10 @@ protected:
    double radius;
    bool dead;
    int age;
+
+private:
+   void spawnPartRing(std::vector<Simulatable*>& out, int numParts);
+   void spawnFragmentRing(std::vector<Simulatable*>& out, int numFragments);
 };
 
 /*********************************************

@@ -4,6 +4,12 @@
  ************************************************************************/
 
 #include "hubble.h"
+#include "partTypes.h"
+
+Part* Hubble::createPart(const Position& offset, const Velocity& kick)
+{
+   return new HubblePart(*this, offset, kick);
+}
 
 Hubble::Hubble() : Satellite(0.0, -GEO_DISTANCE, GEO_VELOCITY, 0.0)
 {

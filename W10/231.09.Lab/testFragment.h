@@ -1,7 +1,7 @@
 /***********************************************************************
  * testFragment.h
- * Unit tests for Fragment. SETUP / EXERCISE / VERIFY / TEARDOWN;
- * EXERCISE is a single call to the method under test; VERIFY is asserts only.
+ * Unit tests for Fragment. Each test: SETUP / EXERCISE / VERIFY / TEARDOWN;
+ * EXERCISE is exactly one statement (the method under test); VERIFY is only asserts.
  ************************************************************************/
 
 #pragma once
@@ -29,17 +29,17 @@ class TestFragment : public UnitTest
 public:
    void run()
    {
-      constructor_setsPositionFromParentPlusOffset();
-      constructor_setsVelocityFromKick();
-      getRadius_scalesWithZoom();
-      kill_setsDeadFlag();
-      draw_writesFragmentToStream();
-      destroy_defaultLeavesVectorUnchanged();
-      advance_deadFragmentPositionUnchanged();
-      advance_liveFragmentMoves();
-      advance_insideEarth_noMovement();
-      advance_gravityChangesVelocityTowardEarth();
-      advance_spinRotatesDirectionByAngularVelocity();
+      Fragment_constructor_setsPositionFromParentPlusOffset();
+      Fragment_constructor_setsVelocityFromKick();
+      Fragment_getRadius_scalesWithZoom();
+      Fragment_kill_setsDeadFlag();
+      Fragment_draw_writesFragmentToStream();
+      Fragment_destroy_leavesVectorEmpty();
+      Fragment_advance_whenDead_positionUnchanged();
+      Fragment_advance_whenAlive_positionChanges();
+      Fragment_advance_insideEarth_positionUnchanged();
+      Fragment_advance_atRest_negativeVerticalVelocityFromGravity();
+      Fragment_advance_rotatesDirectionByAngularVelocity();
       report("Fragment");
    }
 
@@ -52,11 +52,13 @@ private:
       return delta;
    }
 
-   void constructor_setsPositionFromParentPlusOffset()
+   void Fragment_constructor_setsPositionFromParentPlusOffset()
    {
       // SETUP
       const double px = -500000.0;
       const double py = 750000.0;
+      const double expectedX = px + 120.0;
+      const double expectedY = py - 200.0;
       SatelliteFixture parent(px, py, 0.0, 0.0);
       Position off;
       off.setMeters(120.0, -200.0);
@@ -64,13 +66,13 @@ private:
       // EXERCISE
       Fragment frag(parent, off, kick);
       // VERIFY
-      assertEquals(frag.getPosition().getMetersX(), px + 120.0);
-      assertEquals(frag.getPosition().getMetersY(), py - 200.0);
+      assertEquals(frag.getPosition().getMetersX(), expectedX);
+      assertEquals(frag.getPosition().getMetersY(), expectedY);
       // TEARDOWN
       // (none)
    }
 
-   void constructor_setsVelocityFromKick()
+   void Fragment_constructor_setsVelocityFromKick()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 0.0);
@@ -86,7 +88,7 @@ private:
       // (none)
    }
 
-   void getRadius_scalesWithZoom()
+   void Fragment_getRadius_scalesWithZoom()
    {
       // SETUP
       Position zoomProbe;
@@ -104,7 +106,7 @@ private:
       zoomProbe.setZoom(savedZoom);
    }
 
-   void kill_setsDeadFlag()
+   void Fragment_kill_setsDeadFlag()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 1000.0);
@@ -120,7 +122,7 @@ private:
       // (none)
    }
 
-   void draw_writesFragmentToStream()
+   void Fragment_draw_writesFragmentToStream()
    {
       // SETUP
       SatelliteFixture parent(500000.0, -500000.0, 0.0, 2000.0);
@@ -137,7 +139,7 @@ private:
       // (none)
    }
 
-   void destroy_defaultLeavesVectorUnchanged()
+   void Fragment_destroy_leavesVectorEmpty()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 0.0);
@@ -154,7 +156,7 @@ private:
       // (none)
    }
 
-   void advance_deadFragmentPositionUnchanged()
+   void Fragment_advance_whenDead_positionUnchanged()
    {
       // SETUP
       SatelliteFixture parent(0.0, 0.0, 0.0, 1000.0);
@@ -174,7 +176,7 @@ private:
       // (none)
    }
 
-   void advance_liveFragmentMoves()
+   void Fragment_advance_whenAlive_positionChanges()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0);
@@ -193,7 +195,7 @@ private:
       // (none)
    }
 
-   void advance_insideEarth_noMovement()
+   void Fragment_advance_insideEarth_positionUnchanged()
    {
       // SETUP
       double x0 = EARTH_RADIUS - 50.0;
@@ -211,7 +213,7 @@ private:
       // (none)
    }
 
-   void advance_gravityChangesVelocityTowardEarth()
+   void Fragment_advance_atRest_negativeVerticalVelocityFromGravity()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 0.0);
@@ -227,9 +229,10 @@ private:
       // (none)
    }
 
-   void advance_spinRotatesDirectionByAngularVelocity()
+   void Fragment_advance_rotatesDirectionByAngularVelocity()
    {
       // SETUP
+      const double expectedSpinRad = 0.08;
       SatelliteFixture parent(0.0, GEO_DISTANCE, 500.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
@@ -239,7 +242,7 @@ private:
       // EXERCISE
       frag.advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
       // VERIFY
-      assertEqualsTolerance(getNormalizedDirectionDelta(dirBefore, frag.getDirectionRadians()), 0.08, 0.01);
+      assertEqualsTolerance(getNormalizedDirectionDelta(dirBefore, frag.getDirectionRadians()), expectedSpinRad, 0.01);
       // TEARDOWN
       // (none)
    }

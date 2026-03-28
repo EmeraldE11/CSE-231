@@ -4,6 +4,12 @@
  ************************************************************************/
 
 #include "starlink.h"
+#include "partTypes.h"
+
+Part* Starlink::createPart(const Position& offset, const Velocity& kick)
+{
+   return new StarlinkPart(*this, offset, kick);
+}
 
 Starlink::Starlink() : Satellite(0.0, -13020000.0, 5800.0, 0.0)
 {

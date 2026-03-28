@@ -76,9 +76,18 @@ void Satellite::advance(double timePerFrame, double earthRadius, double gravityS
 
 
 
+Part* Satellite::createPart(const Position& offset, const Velocity& kick)
+{
+   (void)offset;
+   (void)kick;
+   return nullptr;
+}
+
 void Satellite::spawnPart(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick)
 {
-   out.push_back(new Part(*this, offset, kick));
+   Part* p = createPart(offset, kick);
+   if (p)
+      out.push_back(p);
 }
 
 void Satellite::spawnFragment(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick)
@@ -87,6 +96,12 @@ void Satellite::spawnFragment(std::vector<Simulatable*>& out, const Position& of
 }
 
 void Satellite::spawnDebrisOnCollision(std::vector<Simulatable*>& out, int numParts, int numFragments)
+{
+   spawnPartRing(out, numParts);
+   spawnFragmentRing(out, numFragments);
+}
+
+void Satellite::spawnPartRing(std::vector<Simulatable*>& out, int numParts)
 {
    for (int i = 0; i < numParts; i++)
    {
@@ -98,6 +113,10 @@ void Satellite::spawnDebrisOnCollision(std::vector<Simulatable*>& out, int numPa
       Velocity kick(d.getDx() * KICK_VELOCITY * 0.3, d.getDy() * KICK_VELOCITY * 0.3);
       spawnPart(out, off, kick);
    }
+}
+
+void Satellite::spawnFragmentRing(std::vector<Simulatable*>& out, int numFragments)
+{
    for (int i = 0; i < numFragments; i++)
    {
       double angle = 2.0 * M_PI * i / numFragments + 0.5;

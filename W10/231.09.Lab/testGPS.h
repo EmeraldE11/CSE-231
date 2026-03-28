@@ -1,12 +1,14 @@
 /***********************************************************************
  * testGPS.h
  * Unit tests for the GPS satellite class.
- * Each test follows SETUP / EXERCISE / VERIFY / TEARDOWN.
+ * Each test: SETUP / EXERCISE / VERIFY / TEARDOWN; EXERCISE one statement; VERIFY asserts only.
  ************************************************************************/
 
 #pragma once
 
 #include "gps.h"
+#include "fragment.h"
+#include "partTypes.h"
 #include "unitTest.h"
 
 class TestGPS : public UnitTest
@@ -14,16 +16,16 @@ class TestGPS : public UnitTest
 public:
    void run()
    {
-      constructor_gpsInitialState();
-      constructor_gpsWithCoordinates();
-      kill_setsDeadFlag();
-      advance_liveGpsMoves();
-      destroy_spawnsPartsAndFragments();
+      GPS_constructor_default_initialState();
+      GPS_constructor_withCoordinates_setsState();
+      GPS_kill_setsDeadFlag();
+      GPS_advance_whenAlive_positionChanges();
+      GPS_destroy_spawnsGpsPartsAndFragments();
       report("GPS");
    }
 
 private:
-   void constructor_gpsInitialState()
+   void GPS_constructor_default_initialState()
    {
       // SETUP
       // (none)
@@ -38,7 +40,7 @@ private:
       // (none)
    }
 
-   void constructor_gpsWithCoordinates()
+   void GPS_constructor_withCoordinates_setsState()
    {
       // SETUP
       const double x = 23001634.72;
@@ -58,7 +60,7 @@ private:
       // (none)
    }
 
-   void kill_setsDeadFlag()
+   void GPS_kill_setsDeadFlag()
    {
       // SETUP
       GPS g;
@@ -70,7 +72,7 @@ private:
       // (none)
    }
 
-   void advance_liveGpsMoves()
+   void GPS_advance_whenAlive_positionChanges()
    {
       // SETUP
       GPS g;
@@ -85,7 +87,7 @@ private:
       // (none)
    }
 
-   void destroy_spawnsPartsAndFragments()
+   void GPS_destroy_spawnsGpsPartsAndFragments()
    {
       // SETUP
       GPS g;
@@ -94,9 +96,13 @@ private:
       g.destroy(bodies);
       // VERIFY
       assertUnit(bodies.size() == 5);
+      assertUnit(dynamic_cast<GPSPart*>(bodies[0]) != nullptr);
+      assertUnit(dynamic_cast<GPSPart*>(bodies[1]) != nullptr);
+      assertUnit(dynamic_cast<GPSPart*>(bodies[2]) != nullptr);
+      assertUnit(dynamic_cast<Fragment*>(bodies[3]) != nullptr);
+      assertUnit(dynamic_cast<Fragment*>(bodies[4]) != nullptr);
       // TEARDOWN
       for (Simulatable* p : bodies)
          delete p;
    }
 };
-

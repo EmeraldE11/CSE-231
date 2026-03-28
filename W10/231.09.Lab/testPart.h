@@ -1,12 +1,13 @@
 /***********************************************************************
  * testPart.h
- * Unit tests for Part. SETUP / EXERCISE / VERIFY / TEARDOWN;
- * EXERCISE is a single call to the method under test; VERIFY is asserts only.
+ * Unit tests for Part (via GPSPart). Each test: SETUP / EXERCISE / VERIFY / TEARDOWN;
+ * EXERCISE is exactly one statement (the method under test); VERIFY is only asserts.
  ************************************************************************/
 
 #pragma once
 
 #include "part.h"
+#include "partTypes.h"
 #include "fragment.h"
 #include "satellite.h"
 #include "testSatellite.h"
@@ -32,18 +33,18 @@ class TestPart : public UnitTest
 public:
    void run()
    {
-      constructor_setsPositionFromParentPlusOffset();
-      constructor_setsVelocityFromKick();
-      getRadius_scalesWithZoom();
-      kill_setsDeadFlag();
-      draw_writesProjectileToStream();
-      destroy_spawnsTwoFragments();
-      destroy_doesNotKillPart();
-      advance_deadPartPositionUnchanged();
-      advance_livePartMoves();
-      advance_insideEarth_noMovement();
-      advance_gravityChangesVelocityTowardEarth();
-      advance_spinRotatesDirectionByAngularVelocity();
+      GPSPart_constructor_setsPositionFromParentPlusOffset();
+      GPSPart_constructor_setsVelocityFromKick();
+      GPSPart_getRadius_scalesWithZoom();
+      GPSPart_kill_setsDeadFlag();
+      GPSPart_draw_writesProjectileToStream();
+      GPSPart_destroy_spawnsTwoFragments();
+      GPSPart_destroy_doesNotKillPart();
+      GPSPart_advance_whenDead_positionUnchanged();
+      GPSPart_advance_whenAlive_positionChanges();
+      GPSPart_advance_insideEarth_positionUnchanged();
+      GPSPart_advance_atRest_negativeVerticalVelocityFromGravity();
+      GPSPart_advance_rotatesDirectionByAngularVelocity();
       report("Part");
    }
 
@@ -56,25 +57,27 @@ private:
       return delta;
    }
 
-   void constructor_setsPositionFromParentPlusOffset()
+   void GPSPart_constructor_setsPositionFromParentPlusOffset()
    {
       // SETUP
       const double px = 1000000.0;
       const double py = 2000000.0;
+      const double expectedX = px + 50.0;
+      const double expectedY = py - 75.0;
       SatelliteFixture parent(px, py, 0.0, 0.0);
       Position off;
       off.setMeters(50.0, -75.0);
       Velocity kick(0.0, 0.0);
       // EXERCISE
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // VERIFY
-      assertEquals(part.getPosition().getMetersX(), px + 50.0);
-      assertEquals(part.getPosition().getMetersY(), py - 75.0);
+      assertEquals(part.getPosition().getMetersX(), expectedX);
+      assertEquals(part.getPosition().getMetersY(), expectedY);
       // TEARDOWN
       // (none)
    }
 
-   void constructor_setsVelocityFromKick()
+   void GPSPart_constructor_setsVelocityFromKick()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 0.0);
@@ -82,7 +85,7 @@ private:
       off.setMeters(0.0, 0.0);
       Velocity kick(333.0, -444.0);
       // EXERCISE
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // VERIFY
       assertEquals(part.getVelocity().getDx(), 333.0);
       assertEquals(part.getVelocity().getDy(), -444.0);
@@ -90,7 +93,7 @@ private:
       // (none)
    }
 
-   void getRadius_scalesWithZoom()
+   void GPSPart_getRadius_scalesWithZoom()
    {
       // SETUP
       Position zoomProbe;
@@ -101,21 +104,21 @@ private:
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
       // EXERCISE
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // VERIFY
       assertEquals(part.getRadius(), 200.0);
       // TEARDOWN
       zoomProbe.setZoom(savedZoom);
    }
 
-   void kill_setsDeadFlag()
+   void GPSPart_kill_setsDeadFlag()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 100.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // EXERCISE
       part.kill();
       // VERIFY
@@ -124,14 +127,14 @@ private:
       // (none)
    }
 
-   void draw_writesProjectileToStream()
+   void GPSPart_draw_writesProjectileToStream()
    {
       // SETUP
       SatelliteFixture parent(1000000.0, 2000000.0, 1000.0, 0.0);
       Position off;
       off.setMeters(10.0, 0.0);
       Velocity kick(500.0, 100.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       TestGoutPart gout;
       // EXERCISE
       part.draw(gout);
@@ -141,14 +144,14 @@ private:
       // (none)
    }
 
-   void destroy_spawnsTwoFragments()
+   void GPSPart_destroy_spawnsTwoFragments()
    {
       // SETUP
       SatelliteFixture parent(0.0, 0.0, 1000.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(100.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       std::vector<Simulatable*> satellites;
       // EXERCISE
       part.destroy(satellites);
@@ -161,14 +164,14 @@ private:
          delete p;
    }
 
-   void destroy_doesNotKillPart()
+   void GPSPart_destroy_doesNotKillPart()
    {
       // SETUP
       SatelliteFixture parent(0.0, 0.0, 1000.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(100.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       std::vector<Simulatable*> satellites;
       // EXERCISE
       part.destroy(satellites);
@@ -179,14 +182,14 @@ private:
          delete p;
    }
 
-   void advance_deadPartPositionUnchanged()
+   void GPSPart_advance_whenDead_positionUnchanged()
    {
       // SETUP
       SatelliteFixture parent(0.0, 0.0, 1000.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(100.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       part.kill();
       double xBefore = part.getPosition().getMetersX();
       double yBefore = part.getPosition().getMetersY();
@@ -199,14 +202,14 @@ private:
       // (none)
    }
 
-   void advance_livePartMoves()
+   void GPSPart_advance_whenAlive_positionChanges()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       double xBefore = part.getPosition().getMetersX();
       double yBefore = part.getPosition().getMetersY();
       // EXERCISE
@@ -218,7 +221,7 @@ private:
       // (none)
    }
 
-   void advance_insideEarth_noMovement()
+   void GPSPart_advance_insideEarth_positionUnchanged()
    {
       // SETUP
       double x0 = EARTH_RADIUS - 100.0;
@@ -226,7 +229,7 @@ private:
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // EXERCISE
       part.advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
       // VERIFY
@@ -236,14 +239,14 @@ private:
       // (none)
    }
 
-   void advance_gravityChangesVelocityTowardEarth()
+   void GPSPart_advance_atRest_negativeVerticalVelocityFromGravity()
    {
       // SETUP
       SatelliteFixture parent(0.0, GEO_DISTANCE, 0.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       // EXERCISE
       part.advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
       // VERIFY
@@ -252,19 +255,20 @@ private:
       // (none)
    }
 
-   void advance_spinRotatesDirectionByAngularVelocity()
+   void GPSPart_advance_rotatesDirectionByAngularVelocity()
    {
       // SETUP
+      const double expectedSpinRad = 0.05;
       SatelliteFixture parent(0.0, GEO_DISTANCE, 1000.0, 0.0);
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(100.0, 0.0);
-      Part part(parent, off, kick);
+      GPSPart part(parent, off, kick);
       double dirBefore = part.getDirectionRadians();
       // EXERCISE
       part.advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
       // VERIFY
-      assertEqualsTolerance(getNormalizedDirectionDelta(dirBefore, part.getDirectionRadians()), 0.05, 0.01);
+      assertEqualsTolerance(getNormalizedDirectionDelta(dirBefore, part.getDirectionRadians()), expectedSpinRad, 0.01);
       // TEARDOWN
       // (none)
    }

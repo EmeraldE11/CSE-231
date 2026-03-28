@@ -13,4 +13,7 @@ public:
    CrewDragon();
    void draw(ogstream& gout) override;
    void destroy(std::vector<Simulatable*>& satellites) override;
+
+protected:
+   Part* createPart(const Position& offset, const Velocity& kick) override;
 };

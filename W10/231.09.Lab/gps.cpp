@@ -4,6 +4,12 @@
  ************************************************************************/
 
 #include "gps.h"
+#include "partTypes.h"
+
+Part* GPS::createPart(const Position& offset, const Velocity& kick)
+{
+   return new GPSPart(*this, offset, kick);
+}
 
 GPS::GPS() : Satellite(0.0, GPS_DISTANCE, -GPS_VELOCITY, 0.0)
 {

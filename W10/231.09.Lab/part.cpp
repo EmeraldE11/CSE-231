@@ -25,6 +25,11 @@ void Part::draw(ogstream& gout)
 
 void Part::destroy(std::vector<Simulatable*>& satellites)
 {
+   spawnTwoFragmentsOrthogonal(satellites);
+}
+
+void Part::spawnTwoFragmentsOrthogonal(std::vector<Simulatable*>& satellites)
+{
    Direction d1;
    d1.setRadians(direction.getRadians());
    Direction d2;
