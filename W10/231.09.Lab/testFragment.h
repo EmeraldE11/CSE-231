@@ -14,6 +14,16 @@
 #include <cmath>
 #include <string>
 
+// Same pattern as TestGout in testDraw.h (see testPart.h / TestGoutPart).
+class TestGoutFragment : public ogstream
+{
+public:
+   TestGoutFragment() : ogstream() {}
+   ~TestGoutFragment() { str(""); }
+   void flush() override {}
+   void drawFragment(const Position&, double) override { *this << "Fragment"; }
+};
+
 class TestFragment : public UnitTest
 {
 public:
@@ -118,8 +128,7 @@ private:
       off.setMeters(5.0, 5.0);
       Velocity kick(300.0, -100.0);
       Fragment frag(parent, off, kick);
-      Position pt;
-      ogstreamFake gout(pt);
+      TestGoutFragment gout;
       // EXERCISE
       frag.draw(gout);
       // VERIFY
