@@ -40,19 +40,19 @@ const double GEO_VELOCITY = 3100.0;
 const double GPS_DISTANCE = 26560000.0;
 const double GPS_VELOCITY = 3880.0;
 const double KICK_VELOCITY = 2000.0;
-/** Bullet hitbox radius in pixels (matches world distance via Position::getPixels). */
+// Bullet hitbox radius in pixels
 const double BULLET_RADIUS_PIXELS = 3.0;
-/** Extra speed along the nose past ship velocity so the round clears the ship quickly. */
+// Extra speed along the nose past ship velocity so the round clears the ship quickly.
 const double BULLET_RELATIVE_KICK = 12000.0;
-/** Extra distance past the sprite nose (in pixels, converted with zoom) so the round clears the art. */
+// Extra distance past the ship nose
 const double BULLET_SPAWN_CLEARANCE_PIXELS = 3.0;
-/** Ship sprite nose distance from center in drawShip local coords (+local Y is forward). */
+// Ship sprite nose distance from center in drawShip local coords
 const double SHIP_NOSE_OFFSET_PIXELS = 18.0;
 const double TIME_PER_FRAME = SIM_SECONDS_PER_FRAME;
 const double ROTATION_PER_FRAME = -(2.0 * M_PI * SIM_SECONDS_PER_FRAME / SECONDS_PER_DAY);
 const int FRAGMENT_LIFETIME_FRAMES = 70;
 const int BULLET_LIFETIME_FRAMES = 70;
-/** Minimum frames between shots so rounds cannot stack and collide with each other. */
+// Minimum frames between shots so rounds cannot stack and collide with each other.
 const int BULLET_FIRE_COOLDOWN_FRAMES = 15;
 
 Acceleration getGravity(const Position& pos, double earthRadius, double gravitySeaLevel)

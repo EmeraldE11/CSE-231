@@ -34,7 +34,7 @@ public:
    {
       constructor_setsPositionFromParentPlusOffset();
       constructor_setsVelocityFromKick();
-      getRadius_scalesWithZoom();
+      getRadius_isPixelHitbox();
       kill_setsDeadFlag();
       draw_writesProjectileToStream();
       destroy_spawnsTwoFragments();
@@ -90,9 +90,8 @@ private:
       // (none)
    }
 
-   void getRadius_scalesWithZoom()
+   void getRadius_isPixelHitbox()
    {
-      // SETUP
       Position zoomProbe;
       double savedZoom = zoomProbe.getZoom();
       zoomProbe.setZoom(100.0);
@@ -100,11 +99,8 @@ private:
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      // EXERCISE
       Part part(parent, off, kick);
-      // VERIFY
-      assertEquals(part.getRadius(), 200.0);
-      // TEARDOWN
+      assertEquals(part.getRadius(), 2.0);
       zoomProbe.setZoom(savedZoom);
    }
 

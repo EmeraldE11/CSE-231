@@ -10,7 +10,7 @@ Fragment::Fragment(const Satellite& parent, const Position& offset, const Veloci
               kick.getDx(), kick.getDy())
 {
    angularVelocity = 0.08;
-   radius = 1.0 * position.getZoom();
+   radius = 1.0;
 }
 
 void Fragment::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)

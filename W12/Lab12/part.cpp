@@ -15,7 +15,8 @@ Part::Part(const Satellite& parent, const Position& offset, const Velocity& kick
               kick.getDx(), kick.getDy())
 {
    angularVelocity = 0.05;
-   radius = 2.0 * position.getZoom();
+   // Hitbox radius in pixels (same convention as GPS radius, bullet); satelliteHitsEarth uses radius * zoom.
+   radius = 2.0;
 }
 
 void Part::draw(ogstream& gout)

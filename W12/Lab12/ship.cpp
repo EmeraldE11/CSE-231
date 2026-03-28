@@ -9,6 +9,10 @@
 #include "uiInteract.h"
 #include <cmath>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 extern const double TIME_PER_FRAME;
 // define a small thrust acceleration for the ship:
 const double SHIP_THRUST = 25.0;

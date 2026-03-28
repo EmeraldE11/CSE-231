@@ -59,7 +59,7 @@ private:
       Position zref;
       double z = zref.getZoom();
       CollisionTestSat a(0.0, GEO_DISTANCE, 10.0);
-      // 20 px apart in world-space meters: touching externally, not overlapping (strict <).
+      // 20 px apart in world-space meters: touching externally, not overlapping.
       CollisionTestSat b(20.0 * z, GEO_DISTANCE, 10.0);
       assertUnit(!satellitesCollide(a, b));
    }

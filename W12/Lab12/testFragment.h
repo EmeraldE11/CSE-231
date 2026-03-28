@@ -31,7 +31,7 @@ public:
    {
       constructor_setsPositionFromParentPlusOffset();
       constructor_setsVelocityFromKick();
-      getRadius_scalesWithZoom();
+      getRadius_isPixelHitbox();
       kill_setsDeadFlag();
       draw_writesFragmentToStream();
       destroy_defaultLeavesVectorUnchanged();
@@ -87,9 +87,8 @@ private:
       // (none)
    }
 
-   void getRadius_scalesWithZoom()
+   void getRadius_isPixelHitbox()
    {
-      // SETUP
       Position zoomProbe;
       double savedZoom = zoomProbe.getZoom();
       zoomProbe.setZoom(100.0);
@@ -97,10 +96,8 @@ private:
       Position off;
       off.setMeters(0.0, 0.0);
       Velocity kick(0.0, 0.0);
-      // EXERCISE
       Fragment frag(parent, off, kick);
-      // VERIFY
-      assertEquals(frag.getRadius(), 100.0);
+      assertEquals(frag.getRadius(), 1.0);
       // TEARDOWN
       zoomProbe.setZoom(savedZoom);
    }
