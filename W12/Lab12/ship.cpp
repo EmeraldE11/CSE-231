@@ -9,8 +9,8 @@
 #include "uiInteract.h"
 #include <cmath>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
+#ifdef _WIN32
+#include <corecrt_math_defines.h>
 #endif
 
 extern const double TIME_PER_FRAME;
