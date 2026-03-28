@@ -73,6 +73,9 @@ const double GPS_ORBIT_Y = 13280000.0;
 const double GPS_ORBIT_VX = 1940.0;
 const double GPS_ORBIT_VY = 3360.18;
 
+// Background twinkle stars (original single star + 50 more).
+static const int NUM_BACKGROUND_STARS = 51;
+
 /*********************************************
  * Sim
  * Holds the list of bodies and star state. move() advances each body; draw() draws star and bodies.
@@ -97,9 +100,13 @@ public:
       // Create the ship
       pShip = new Ship();
       bodies.push_back(pShip);
-      
-      ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+
+      starPositions.resize(NUM_BACKGROUND_STARS);
+      for (int i = 0; i < NUM_BACKGROUND_STARS; i++)
+      {
+         starPositions[i].setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
+         starPositions[i].setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+      }
       phaseStar = 0;
    }
 
@@ -114,7 +121,7 @@ public:
    void draw();
 
    std::vector<Simulatable*> bodies;
-   Position ptStar;
+   std::vector<Position> starPositions;
    Position ptUpperRight;
    unsigned char phaseStar;
    
@@ -176,7 +183,11 @@ void Sim::draw()
 {
    Position pt;
    ogstream gout(pt);
-   gout.drawStar(ptStar, phaseStar);
+   for (size_t i = 0; i < starPositions.size(); i++)
+   {
+      unsigned char ph = static_cast<unsigned char>(phaseStar + static_cast<int>(i) * 17);
+      gout.drawStar(starPositions[i], ph);
+   }
    for (Simulatable* body : bodies)
       body->draw(gout);
 }
