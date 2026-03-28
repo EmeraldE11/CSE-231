@@ -57,6 +57,8 @@ public:
    }
    double getZoom() const { return metersFromPixels; }
 
+   static double getMetersFromPixels() { return metersFromPixels; }
+
 private:
    double x;                 // horizontal position
    double y;                 // vertical position

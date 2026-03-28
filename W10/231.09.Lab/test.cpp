@@ -21,6 +21,7 @@
 #include "testStarlink.h"
 #include "testPart.h"
 #include "testFragment.h"
+#include "testCollision.h"
 #include "testDraw.h"
 #include <iostream>
 
@@ -56,6 +57,7 @@ void testRunner()
    TestStarlink().run();
    TestPart().run();
    TestFragment().run();
+   TestCollision().run();
    TestDraw().run();
 
    std::cout.flush();

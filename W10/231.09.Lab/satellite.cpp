@@ -56,6 +56,20 @@ void Satellite::move(double time)
    advance(time, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
 }
 
+void Satellite::destroy(std::vector<Simulatable*>& satellites)
+{
+   if (dead) return;
+   const int n = 3;
+   for (int i = 0; i < n; i++)
+   {
+      double angle = direction.getRadians() + (2.0 * M_PI * i / n);
+      Direction kick;
+      kick.setRadians(angle);
+      satellites.push_back(new Part(*this, kick));
+   }
+   kill();
+}
+
 void Satellite::advance(double timePerFrame, double earthRadius, double gravitySeaLevel)
 {
    if (dead) return;
