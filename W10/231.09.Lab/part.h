@@ -1,16 +1,17 @@
 /***********************************************************************
- * hubble.h
- * Hubble Space Telescope: GEO at (0, -42164000), velocity (3100, 0), radius 10.
+ * part.h
+ * Debris piece broken from a satellite on collision. Does not expire;
+ * can be broken into fragments.
  ************************************************************************/
 
 #pragma once
 
 #include "satellite.h"
 
-class Hubble : public Satellite
+class Part : public Satellite
 {
 public:
-   Hubble();
+   Part(const Satellite& parent, const Position& offset, const Velocity& kick);
    void draw(ogstream& gout) override;
    void destroy(std::vector<Simulatable*>& satellites) override;
 };

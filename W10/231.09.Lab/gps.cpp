@@ -15,6 +15,11 @@ GPS::GPS(double x, double y, double vx, double vy) : Satellite(x, y, vx, vy)
    radius = 12.0;
 }
 
+void GPS::destroy(std::vector<Simulatable*>& satellites)
+{
+   spawnDebrisOnCollision(satellites, 3, 2);
+}
+
 void GPS::draw(ogstream& gout)
 {
    gout.drawGPS(position, direction.getRadians());

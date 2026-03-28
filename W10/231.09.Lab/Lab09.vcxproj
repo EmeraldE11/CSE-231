@@ -147,6 +147,8 @@
     <ClCompile Include="hubble.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="satellite.cpp" />
+    <ClCompile Include="part.cpp" />
+    <ClCompile Include="fragment.cpp" />
     <ClCompile Include="sputnik.cpp" />
     <ClCompile Include="starlink.cpp" />
     <ClCompile Include="test.cpp" />
@@ -165,6 +167,10 @@
     <ClInclude Include="testPhysics.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="satellite.h" />
+    <ClInclude Include="part.h" />
+    <ClInclude Include="fragment.h" />
+    <ClInclude Include="testPart.h" />
+    <ClInclude Include="testFragment.h" />
     <ClInclude Include="sputnik.h" />
     <ClInclude Include="starlink.h" />
     <ClInclude Include="testSputnik.h" />

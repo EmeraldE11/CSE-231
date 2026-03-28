@@ -490,17 +490,17 @@ private:
       // (none)
    }
 
-   // destroy() stub: call with list; no crash, list unchanged.
+   // destroy() default on SatelliteFixture: base Satellite::destroy is a no-op.
    void destroy_noOp()
    {
       // SETUP
-      Hubble h;
+      SatelliteFixture f(0.0, 0.0, 1000.0, 0.0);
       std::vector<Simulatable*> satellites;
       // EXERCISE
-      h.destroy(satellites);
+      f.destroy(satellites);
       // VERIFY
       assertUnit(satellites.empty());
-      assertUnit(!h.isDead());
+      assertUnit(!f.isDead());
       // TEARDOWN
       // (none)
    }

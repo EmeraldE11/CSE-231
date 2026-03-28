@@ -16,7 +16,6 @@
 #include "crewDragon.h"
 #include "starlink.h"
 #include "test.h"
-#include "ship.h"
 
 using namespace std;
 
@@ -90,11 +89,6 @@ public:
       bodies.push_back(new Hubble());
       bodies.push_back(new CrewDragon());
       bodies.push_back(new Starlink());
-      
-      // Create the ship
-      pShip = new Ship();
-      bodies.push_back(pShip);
-      
       ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
       phaseStar = 0;
@@ -106,7 +100,7 @@ public:
          delete p;
    }
 
-   void input(const Interface* pUI);
+   void input(const Interface* pUI) { (void)pUI; }
    void move();
    void draw();
 
@@ -114,21 +108,34 @@ public:
    Position ptStar;
    Position ptUpperRight;
    unsigned char phaseStar;
-   
-private:
-   Ship* pShip{nullptr};
 };
-
-void Sim::input(const Interface* pUI)
-{
-   if (pShip)
-      pShip->input(pUI, bodies);
-}
 
 void Sim::move()
 {
    for (Simulatable* body : bodies)
       body->advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
+
+   const size_t n = bodies.size();
+   for (size_t i = 0; i < n; ++i)
+   {
+      for (size_t j = i + 1; j < n; ++j)
+      {
+         Satellite* a = dynamic_cast<Satellite*>(bodies[i]);
+         Satellite* b = dynamic_cast<Satellite*>(bodies[j]);
+         if (!a || !b || a->isDead() || b->isDead())
+            continue;
+         double dx = a->getPosition().getMetersX() - b->getPosition().getMetersX();
+         double dy = a->getPosition().getMetersY() - b->getPosition().getMetersY();
+         double dist = sqrt(dx * dx + dy * dy);
+         if (dist >= a->getRadius() + b->getRadius())
+            continue;
+         a->destroy(bodies);
+         b->destroy(bodies);
+         a->kill();
+         b->kill();
+      }
+   }
+
    phaseStar++;
 }
 
@@ -138,7 +145,12 @@ void Sim::draw()
    ogstream gout(pt);
    gout.drawStar(ptStar, phaseStar);
    for (Simulatable* body : bodies)
+   {
+      Satellite* s = dynamic_cast<Satellite*>(body);
+      if (s && s->isDead())
+         continue;
       body->draw(gout);
+   }
 }
 
 void callBack(const Interface* pUI, void* p)

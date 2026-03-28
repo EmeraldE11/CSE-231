@@ -1,16 +1,15 @@
 /***********************************************************************
- * hubble.h
- * Hubble Space Telescope: GEO at (0, -42164000), velocity (3100, 0), radius 10.
+ * fragment.h
+ * Uniform debris particle; same behavior regardless of origin.
  ************************************************************************/
 
 #pragma once
 
 #include "satellite.h"
 
-class Hubble : public Satellite
+class Fragment : public Satellite
 {
 public:
-   Hubble();
+   Fragment(const Satellite& parent, const Position& offset, const Velocity& kick);
    void draw(ogstream& gout) override;
-   void destroy(std::vector<Simulatable*>& satellites) override;
 };

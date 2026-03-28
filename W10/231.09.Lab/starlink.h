@@ -12,4 +12,5 @@ class Starlink : public Satellite
 public:
    Starlink();
    void draw(ogstream& gout) override;
+   void destroy(std::vector<Simulatable*>& satellites) override;
 };
