@@ -114,6 +114,28 @@ void Sim::move()
 {
    for (Simulatable* body : bodies)
       body->advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
+
+   const size_t n = bodies.size();
+   for (size_t i = 0; i < n; ++i)
+   {
+      for (size_t j = i + 1; j < n; ++j)
+      {
+         Satellite* a = dynamic_cast<Satellite*>(bodies[i]);
+         Satellite* b = dynamic_cast<Satellite*>(bodies[j]);
+         if (!a || !b || a->isDead() || b->isDead())
+            continue;
+         double dx = a->getPosition().getMetersX() - b->getPosition().getMetersX();
+         double dy = a->getPosition().getMetersY() - b->getPosition().getMetersY();
+         double dist = sqrt(dx * dx + dy * dy);
+         if (dist >= a->getRadius() + b->getRadius())
+            continue;
+         a->destroy(bodies);
+         b->destroy(bodies);
+         a->kill();
+         b->kill();
+      }
+   }
+
    phaseStar++;
 }
 
@@ -123,7 +145,12 @@ void Sim::draw()
    ogstream gout(pt);
    gout.drawStar(ptStar, phaseStar);
    for (Simulatable* body : bodies)
+   {
+      Satellite* s = dynamic_cast<Satellite*>(body);
+      if (s && s->isDead())
+         continue;
       body->draw(gout);
+   }
 }
 
 void callBack(const Interface* pUI, void* p)

@@ -18,6 +18,7 @@ public:
       constructor_gpsWithCoordinates();
       kill_setsDeadFlag();
       advance_liveGpsMoves();
+      destroy_spawnsPartsAndFragments();
       report("GPS");
    }
 
@@ -82,6 +83,20 @@ private:
                  g.getPosition().getMetersY() != yBefore);
       // TEARDOWN
       // (none)
+   }
+
+   void destroy_spawnsPartsAndFragments()
+   {
+      // SETUP
+      GPS g;
+      std::vector<Simulatable*> bodies;
+      // EXERCISE
+      g.destroy(bodies);
+      // VERIFY
+      assertUnit(bodies.size() == 5);
+      // TEARDOWN
+      for (Simulatable* p : bodies)
+         delete p;
    }
 };
 

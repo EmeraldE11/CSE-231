@@ -42,6 +42,12 @@
     <ClCompile Include="satellite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="part.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fragment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="sputnik.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,6 +114,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="satellite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="part.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fragment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testPart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testFragment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sputnik.h">

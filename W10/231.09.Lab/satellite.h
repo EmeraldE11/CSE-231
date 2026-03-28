@@ -95,6 +95,10 @@ public:
    void kill() { dead = true; }
 
 protected:
+   void spawnPart(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick);
+   void spawnFragment(std::vector<Simulatable*>& out, const Position& offset, const Velocity& kick);
+   void spawnDebrisOnCollision(std::vector<Simulatable*>& out, int numParts, int numFragments);
+
    Velocity velocity;
    Direction direction;
    double angularVelocity;
