@@ -31,3 +31,4 @@ void testRunner()
 
    TestPosition().run();
 }
+

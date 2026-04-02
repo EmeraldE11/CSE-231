@@ -12,62 +12,147 @@
  *****************************************************************/
 
 #include <cassert>      // for ASSERT
+#include <cmath>        // for M_PI, sqrt
+#include <vector>       // for collection of simulatable bodies
 #include "uiInteract.h" // for INTERFACE
 #include "uiDraw.h"     // for RANDOM and DRAW*
-#include "position.h"      // for POINT
+#include "position.h"   // for POSITION
 #include "test.h"
 using namespace std;
 
+// Simulator time: 1 minute = 1 real day -> 24*60 = 1440x faster
+const double HOURS_PER_DAY = 24.0;
+const double MINUTES_PER_HOUR = 60.0;
+const double TIME_DILATION = HOURS_PER_DAY * MINUTES_PER_HOUR;  // 1440
+
+const double FRAME_RATE = 30.0;   // frames per second
+const double TIME_PER_FRAME = TIME_DILATION / FRAME_RATE;  // real seconds per frame (48)
+
+const double SECONDS_PER_DAY = 86400.0;   // earth rotation period in real seconds
+const double ROTATION_PER_FRAME = -(2.0 * M_PI / FRAME_RATE) * (TIME_DILATION / SECONDS_PER_DAY);
+
+const double EARTH_RADIUS = 6378000.0;    // meters
+const double GRAVITY_SEA_LEVEL = 9.80665; // m/s^2
+
+// GEO: 35,786 km above earth, 42,164 km from center; orbital velocity 3.1 km/s
+const double GEO_DISTANCE = 42164000.0;   // meters from earth center
+const double GEO_VELOCITY = 3100.0;       // m/s (tangential)
+
+/*************************************************************************
+ * Simulatable
+ * Base for all bodies in the orbital simulation. Matches the problem
+ * domain (earth, satellites, etc.) so the inheritance tree aligns
+ * with the design concern. New body types are added as subclasses.
+ *************************************************************************/
+class Simulatable
+{
+public:
+   virtual ~Simulatable() {}
+   virtual void advance(double timePerFrame, double earthRadius, double gravitySeaLevel) = 0;
+   virtual void draw(ogstream& gout) = 0;
+   Position position;
+};
+
+/*************************************************************************
+ * Earth
+ * Fixed at center; advances by rotating. Draws as earth.
+ *************************************************************************/
+class Earth : public Simulatable
+{
+public:
+   Earth()
+   {
+      position.setMeters(0.0, 0.0);
+      angle = 0.0;
+   }
+   void advance(double timePerFrame, double earthRadius, double gravitySeaLevel) override
+   {
+      angle += ROTATION_PER_FRAME;
+   }
+   void draw(ogstream& gout) override;
+
+   double angle;
+};
+
+/*************************************************************************
+ * Satellite
+ * Orbital body with velocity; advance applies gravity and motion.
+ * New satellite types can be added by subclassing and overriding draw.
+ *************************************************************************/
+class Satellite : public Simulatable
+{
+public:
+   Satellite(double x, double y, double dx, double dy)
+   {
+      position.setMeters(x, y);
+      this->dx = dx;
+      this->dy = dy;
+      rotation = 0.0;
+   }
+   void advance(double t, double r, double g0) override
+   {
+      double x = position.getMetersX();
+      double y = position.getMetersY();
+      double distance = sqrt(x * x + y * y);
+      if (distance <= r)
+         return;
+      double h = distance - r;
+      double gh = g0 * (r / (r + h)) * (r / (r + h));
+      double ddx = -gh * (x / distance);
+      double ddy = -gh * (y / distance);
+      position.setMeters(x + dx * t + 0.5 * ddx * t * t,
+                        y + dy * t + 0.5 * ddy * t * t);
+      dx += ddx * t;
+      dy += ddy * t;
+      rotation += 0.02;
+   }
+   void draw(ogstream& gout) override;
+
+   double dx;
+   double dy;
+   double rotation;
+};
+
 /*************************************************************************
  * Demo
- * Test structure to capture the LM that will move around the screen
+ * Holds a collection of simulatable bodies. Adding a new body type
+ * is done by adding a class and inserting it here—no change to
+ * advance/draw logic in callBack (Straightforward adaptability).
  *************************************************************************/
 class Demo
 {
 public:
-   Demo(Position ptUpperRight) :
-      ptUpperRight(ptUpperRight)
+   Demo(Position ptUpperRight) : ptUpperRight(ptUpperRight)
    {
-      ptHubble.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptHubble.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptSputnik.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptSputnik.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptStarlink.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStarlink.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptCrewDragon.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptCrewDragon.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptShip.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptShip.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptGPS.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptGPS.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+      bodies.push_back(new Earth());
+      bodies.push_back(new Satellite(0.0, GEO_DISTANCE, -GEO_VELOCITY, 0.0));
 
       ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      angleShip = 0.0;
-      angleEarth = 0.0;
       phaseStar = 0;
    }
 
-   Position ptHubble;
-   Position ptSputnik;
-   Position ptStarlink;
-   Position ptCrewDragon;
-   Position ptShip;
-   Position ptGPS;
+   ~Demo()
+   {
+      for (Simulatable* p : bodies)
+         delete p;
+   }
+
+   std::vector<Simulatable*> bodies;
    Position ptStar;
    Position ptUpperRight;
-
    unsigned char phaseStar;
-
-   double angleShip;
-   double angleEarth;
 };
+
+void Earth::draw(ogstream& gout)
+{
+   gout.drawEarth(position, angle);
+}
+
+void Satellite::draw(ogstream& gout)
+{
+   gout.drawGPS(position, rotation);
+}
 
 /*************************************
  * All the interesting work happens here, when
@@ -78,77 +163,19 @@ public:
  **************************************/
 void callBack(const Interface* pUI, void* p)
 {
-   // the first step is to cast the void pointer into a game object. This
-   // is the first step of every single callback function in OpenGL. 
    Demo* pDemo = (Demo*)p;
 
-   //
-   // accept input
-   //
+   for (Simulatable* body : pDemo->bodies)
+      body->advance(TIME_PER_FRAME, EARTH_RADIUS, GRAVITY_SEA_LEVEL);
 
-   // move by a little
-   if (pUI->isUp())
-      pDemo->ptShip.addPixelsY(1.0);
-   if (pUI->isDown())
-      pDemo->ptShip.addPixelsY(-1.0);
-   if (pUI->isLeft())
-      pDemo->ptShip.addPixelsX(-1.0);
-   if (pUI->isRight())
-      pDemo->ptShip.addPixelsX(1.0);
-
-
-   //
-   // perform all the game logic
-   //
-
-   // rotate the earth
-   pDemo->angleEarth += 0.01;
-   pDemo->angleShip += 0.02;
    pDemo->phaseStar++;
-
-   //
-   // draw everything
-   //
 
    Position pt;
    ogstream gout(pt);
 
-   // draw satellites
-   gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);
-   gout.drawHubble    (pDemo->ptHubble,     pDemo->angleShip);
-   gout.drawSputnik   (pDemo->ptSputnik,    pDemo->angleShip);
-   gout.drawStarlink  (pDemo->ptStarlink,   pDemo->angleShip);
-   gout.drawShip      (pDemo->ptShip,       pDemo->angleShip, pUI->isSpace());
-   gout.drawGPS       (pDemo->ptGPS,        pDemo->angleShip);
-
-   // draw parts
-   pt.setPixelsX(pDemo->ptCrewDragon.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptCrewDragon.getPixelsY() + 20);
-   gout.drawCrewDragonRight(pt, pDemo->angleShip); // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptHubble.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptHubble.getPixelsY() + 20);
-   gout.drawHubbleLeft(pt, pDemo->angleShip);      // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptGPS.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptGPS.getPixelsY() + 20);
-   gout.drawGPSCenter(pt, pDemo->angleShip);       // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptStarlink.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptStarlink.getPixelsY() + 20);
-   gout.drawStarlinkArray(pt, pDemo->angleShip);   // notice only two parameters are set
-
-   // draw fragments
-   pt.setPixelsX(pDemo->ptSputnik.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptSputnik.getPixelsY() + 20);
-   gout.drawFragment(pt, pDemo->angleShip);
-   pt.setPixelsX(pDemo->ptShip.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptShip.getPixelsY() + 20);
-   gout.drawFragment(pt, pDemo->angleShip);
-
-   // draw a single star
    gout.drawStar(pDemo->ptStar, pDemo->phaseStar);
-
-   // draw the earth
-   pt.setMeters(0.0, 0.0);
-   gout.drawEarth(pt, pDemo->angleEarth);
+   for (Simulatable* body : pDemo->bodies)
+      body->draw(gout);
 }
 
 double Position::metersFromPixels = 40.0;

@@ -12,6 +12,8 @@
 
 double Position::squareWidth = SIZE_SQUARE;
 double Position::squareHeight = SIZE_SQUARE;
+int Position::windowWidth = 320;
+int Position::windowHeight = 320;
 
 /******************************************
  * POSITION INSERTION OPERATOR
@@ -155,7 +157,9 @@ int Position::getY() const
 void Position::setXY(double x, double y)
 {
 	int c = (int)(x / squareWidth) - 1;
-	int r = 8 - (int)(y / squareHeight);
+	// GLUT gives mouse y with origin at top; board row 0 is at bottom. Flip y.
+	double yFlipped = (windowHeight > 0) ? ((double)windowHeight - y) : y;
+	int r = (int)(yFlipped / squareHeight) - 1;
 
 	if (c < 0 || c > 7)
 	{
@@ -165,7 +169,7 @@ void Position::setXY(double x, double y)
 
 	if (r < 0 || r > 7)
 	{
-		colRow = (c << 4) | 0x0f;
+		setInvalid();
 		return;
 	}
 
@@ -175,6 +179,8 @@ void Position::setBoardWidthHeight(int widthBoard, int heightBoard)
 {
 	if (widthBoard < 0 || heightBoard < 0)
 		return;
+	windowWidth = widthBoard;
+	windowHeight = heightBoard;
 	squareWidth = (double)widthBoard / 10.0; // 8 squares + 2 spaces
 	squareHeight = (double)heightBoard / 10.0;
 }
