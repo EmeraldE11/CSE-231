@@ -54,6 +54,8 @@ const int FRAGMENT_LIFETIME_FRAMES = 70;
 const int BULLET_LIFETIME_FRAMES = 70;
 // Minimum frames between shots so rounds cannot stack and collide with each other.
 const int BULLET_FIRE_COOLDOWN_FRAMES = 15;
+// Background twinkle stars (original one plus 50 more).
+const int NUM_STARS = 100;
 
 Acceleration getGravity(const Position& pos, double earthRadius, double gravitySeaLevel)
 {
@@ -86,7 +88,7 @@ const double GPS_ORBIT_VY = 3360.18;
 
 /*********************************************
  * Sim
- * Holds the list of bodies and star state. move() advances each body; draw() draws star and bodies.
+ * Holds the list of bodies and star state. move() advances each body; draw() draws stars and bodies.
  *********************************************/
 class Sim
 {
@@ -108,8 +110,12 @@ public:
       pShip = new Ship();
       bodies.push_back(pShip);
 
-      ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+      ptStars.resize(NUM_STARS);
+      for (int i = 0; i < NUM_STARS; ++i)
+      {
+         ptStars[i].setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
+         ptStars[i].setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+      }
       phaseStar = 0;
    }
 
@@ -124,7 +130,7 @@ public:
    void draw();
 
    std::vector<Simulatable*> bodies;
-   Position ptStar;
+   std::vector<Position> ptStars;
    Position ptUpperRight;
    unsigned char phaseStar;
 
@@ -194,7 +200,8 @@ void Sim::draw()
 {
    Position pt;
    ogstream gout(pt);
-   gout.drawStar(ptStar, phaseStar);
+   for (int i = 0; i < NUM_STARS; ++i)
+      gout.drawStar(ptStars[i], (unsigned char)(phaseStar + i * 7));
    for (Simulatable* body : bodies)
    {
       Satellite* s = dynamic_cast<Satellite*>(body);
