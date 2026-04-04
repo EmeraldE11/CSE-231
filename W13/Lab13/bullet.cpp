@@ -8,8 +8,8 @@
 Bullet::Bullet(const Satellite& parent, const Position& offset, const Velocity& kick)
    : Satellite(parent.getPosition().getMetersX() + offset.getMetersX(),
               parent.getPosition().getMetersY() + offset.getMetersY(),
-              parent.getVelocity().getDx() + kick.getDx(),
-              parent.getVelocity().getDy() + kick.getDy())
+              kick.getDx(),
+              kick.getDy())
 {
    angularVelocity = 0.0;
    radius = BULLET_RADIUS_PIXELS;
